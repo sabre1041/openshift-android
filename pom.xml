@@ -86,7 +86,7 @@
 			</activation>
 			<modules>
 				<module>openshift-android</module>
-				<module>openshift-android-it</module>
+				<!--module>openshift-android-it</module-->
 			</modules>
 		</profile>
 		<profile>

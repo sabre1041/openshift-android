@@ -1,7 +1,9 @@
 package com.redhat.openshift.test;
 
 import android.test.ActivityInstrumentationTestCase2;
-import com.redhat.openshift.*;
+
+import com.redhat.openshift.HelloAndroidActivity;
+import com.redhat.openshift.test.*;
 
 public class HelloAndroidActivityTest extends ActivityInstrumentationTestCase2<HelloAndroidActivity> {
 
