@@ -1,14 +1,18 @@
 package com.redhat.openshift.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 
-public class OpenshiftResponse<T extends OpenshiftResource>  {
+public class OpenshiftResponse<T extends OpenshiftResource> implements OpenshiftResource  {
 	@SerializedName("api_version")
 	private String apiVersion;
 	private String status;
 	private String type;
 	private String version;
+	private List<OpenshiftMessage> messages = new ArrayList<OpenshiftMessage>();
 	private T data;
 	
 	public String getApiVersion() {
@@ -40,6 +44,12 @@ public class OpenshiftResponse<T extends OpenshiftResource>  {
 	}
 	public void setData(T data) {
 		this.data = data;
+	}
+	public List<OpenshiftMessage> getMessages() {
+		return messages;
+	}
+	public void setMessages(List<OpenshiftMessage> messages) {
+		this.messages = messages;
 	}
 	
 	

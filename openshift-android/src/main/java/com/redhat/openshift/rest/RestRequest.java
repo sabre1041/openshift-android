@@ -1,24 +1,39 @@
 package com.redhat.openshift.rest;
 
-public class RestRequest {
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
-	private String data;
+import android.os.ResultReceiver;
+
+import com.redhat.openshift.model.OpenshiftResource;
+
+public class RestRequest<T extends OpenshiftResource> implements Serializable {
+
+	private OpenshiftResource response;
+	private String intentActionName;
+	private Type type;
 	private RestMethod method;
-	private String contextPath;
+	private String url;
+	private String message;
+	private int status;
+	private ResultReceiver resultReceiver;
+	private Map<String, String> inputParameters = new HashMap<String,String>();
 	
-	public RestRequest(String data, RestMethod method, String contextPath) {
-		this.data = data;
+	public RestRequest(OpenshiftResource response, RestMethod method, String url) {
+		this.response = response;
 		this.method = method;
-		this.setContextPath(contextPath);
+		this.url = url;
 	}
 	
 	public RestRequest() {}
 	
-	public String getData() {
-		return data;
+	public OpenshiftResource getResponse() {
+		return response;
 	}
-	public void setData(String data) {
-		this.data = data;
+	public void setResponse(OpenshiftResource response) {
+		this.response = response;
 	}
 	public RestMethod getMethod() {
 		return method;
@@ -27,12 +42,60 @@ public class RestRequest {
 		this.method = method;
 	}
 
-	public String getContextPath() {
-		return contextPath;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setContextPath(String contextPath) {
-		this.contextPath = contextPath;
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public ResultReceiver getResultReceiver() {
+		return resultReceiver;
+	}
+
+	public void setResultReceiver(ResultReceiver resultReceiver) {
+		this.resultReceiver = resultReceiver;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getIntentActionName() {
+		return intentActionName;
+	}
+
+	public void setIntentActionName(String intentActionName) {
+		this.intentActionName = intentActionName;
+	}
+
+	public Map<String, String> getInputParameters() {
+		return inputParameters;
+	}
+
+	public void setInputParameters(Map<String, String> inputParameters) {
+		this.inputParameters = inputParameters;
 	}
 	
 }

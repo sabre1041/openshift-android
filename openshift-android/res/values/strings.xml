@@ -9,5 +9,9 @@
     <string name="view_openshift_account">View Openshift Account Information</string>
     <string name="openshift_origin_base_url">https://openshift.redhat.com/broker/rest</string>
     <string name="openshift_domain_title">Openshift Domains</string>
+    <string name="account_title">Openshift Account</string>
+    <string name="password_title">Password</string>
+    <string name="login_title">Login</string>
+    <string name="create_account_title">Create an Openshift Account</string>
 
 </resources>

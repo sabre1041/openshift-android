@@ -1,5 +1,6 @@
 package com.redhat.openshift.model;
 
+
 public class UserResource implements OpenshiftResource {
 	
 	private String login;

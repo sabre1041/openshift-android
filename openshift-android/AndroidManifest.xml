@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.0.1-SNAPSHOT" package="com.redhat.openshift">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3" android:versionName="0.0.1-SNAPSHOT" package="com.redhat.openshift">
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/ic_launcher" android:label="@string/app_name" android:theme="@style/AppTheme">
-        <activity android:name="OpenshiftActivity">
+    <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/openshift_logo" android:label="@string/app_name" android:theme="@style/AppTheme">
+        <activity android:name="OpenshiftActivity"> 
         </activity>
-        <service android:name=".service.OpenshiftService"></service>
-        <activity android:name=".activity.DomainActivity">
-            <intent-filter>
+        <service android:name="com.redhat.openshift.service.OpenshiftService"/>
+        <activity android:label="Domains" android:name=".activity.DomainActivity"/>
+        <activity android:label="Applications" android:name=".activity.ApplicationListActivity"/>
+        <activity android:name=".activity.ApplicationViewActivity"/>
+        <activity android:label="Login to Openshift Android" android:name=".activity.LoginActivity">
+		  <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>         
+            </intent-filter> 
         </activity>
     </application>
 

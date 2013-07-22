@@ -1,11 +1,11 @@
 package com.redhat.openshift.service;
 
 import com.redhat.openshift.model.OpenshiftResource;
-import com.redhat.openshift.rest.Response;
+import com.redhat.openshift.rest.RestRequest;
 
 
-public interface OpenshiftCallback<T extends OpenshiftResource> {
+public interface OpenshiftCallback {
 	
-	void send(Response<T> response);
+	void send(int statusCode, RestRequest<? extends OpenshiftResource> response);
 
 }
