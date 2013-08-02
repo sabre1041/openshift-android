@@ -17,13 +17,10 @@ import java.util.LinkedHashMap;
  */
 public class LRUCache<K,V> {
 	
-	/**
- 	* Default settings for eviction settings.
- 	*
- 	* Default maximum number of entries is 128.
- 	* Default expiration time is 600000ms or 10min 
- 	*/ 
+ 	/** Default maximum number of entries is 128*/ 
 	private static final int DEFAULT_MAX_ENTRIES = 128;
+ 	
+	/** Default expiration time is 600000ms or 10min */
 	private static final long DEFAULT_AGE = 600000;
 
 	private Object lock = new Object();
@@ -37,6 +34,12 @@ public class LRUCache<K,V> {
  	* The notify method is called on eviction
  	*/
 	public interface EvictedNotificationCallback<K,V> {
+		/**
+		 * The method that gets called when an entry gets evicted
+		 *
+		 * @param key The key of the entry evicted
+		 * @param value The payload of the entry 
+		 */
 		public void notify(K key,V value);
 	}
 

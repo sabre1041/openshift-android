@@ -13,18 +13,34 @@ import android.content.Context;
 import android.widget.Toast;
 
 
-//TODO: Encrypt/decrypt filename?
-//TODO: Encrypt/decrypt data?
-//TODO: File System structure (/a/b/c/file.txt instead of just /file.txt)?
+/**
+ * A class that provides a filesystem based persistence store
+ *
+ * @see DataStore
+ * 
+ * @author Joey yore
+ * @version 1.0
+ */
 public class FileSystemStore implements DataStore {
 
 	private Context context = null;
 	private String rootDir = "";
 	
+	/**
+	 * Simple constructor
+	 *
+	 * @param context The android context to use
+	 */
 	public FileSystemStore(Context context) {
 		this.context = context;
 	}
 	
+	/**
+	 * Namespace Constructor
+	 *
+	 * @param context The android context to use
+	 * @param rootDir The root directory to use as a namespace
+	 */
 	public FileSystemStore(Context context, String rootDir) {
 		this.context = context;
 		this.rootDir = rootDir;

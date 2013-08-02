@@ -1,4 +1,4 @@
-package com.redat.openshift.util;
+package com.redhat.openshift.util;
 
 import org.junit.Test;
 import org.junit.Assert;

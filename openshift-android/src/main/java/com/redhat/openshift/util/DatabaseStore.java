@@ -12,7 +12,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-
+/**
+ * This class allows for a database backed persistence store.
+ *
+ * @see SQLiteOpenHelper
+ * @see DataStore
+ *
+ * @author Joey Yore
+ * @version 1.0
+ */
 public class DatabaseStore extends SQLiteOpenHelper implements DataStore {
 
 	private static final int DATABASE_VERSION = 1;
@@ -24,12 +32,26 @@ public class DatabaseStore extends SQLiteOpenHelper implements DataStore {
 	
 	private Context context = null;
 	
+	/**
+	 * Simple constructor
+	 *
+	 * @param context The android context to use
+	 */
 	public DatabaseStore(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
 		this.context = context;
 		this.tableName = TABLE_NAME;
 	}
 	
+	/**
+	 * Namespace Constructor
+	 *
+	 * <p>Provides a constructor to initialize under a custom namespace 
+	 * or context root
+	 *
+	 * @param context The android context to use
+	 * @param contextRoot The name of the namespace to put entries under
+	 */
 	public DatabaseStore(Context context, String contextRoot) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
 		this.context = context;
@@ -100,6 +122,11 @@ public class DatabaseStore extends SQLiteOpenHelper implements DataStore {
 		return o;
 	}
 	
+	/**
+	 * Method that allows you to get all objects from the datastore
+	 *
+	 * @return A list of all objects that are in the store
+	 */
 	public List<Object> getAll() {
 		List<Object> objList = new ArrayList<Object>();
 		
@@ -155,6 +182,13 @@ public class DatabaseStore extends SQLiteOpenHelper implements DataStore {
 		return ret;
 	}
 	
+	/**
+	 * A method that will update an existing entry or create a new one
+	 * if that entry does not yet exist
+	 *
+	 * @param key The key name to store the entry under
+	 * @param o The payload of the entry
+	 */
 	public void updateOrCreate(String key,Object o) {
 		Object obj = get(key);
 		if(obj == null) {
