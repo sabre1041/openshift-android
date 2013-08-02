@@ -2,6 +2,8 @@
 .project
 .settings
 .DS_Store
+.*.swp
+~*
 bin/
 gen/
 target/
