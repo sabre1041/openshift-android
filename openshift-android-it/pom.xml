@@ -4,9 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.redhat.android</groupId>
+		<groupId>com.openshift.android</groupId>
 		<artifactId>openshift-android-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
 	</parent>
 
 	<artifactId>openshift-android-it</artifactId>
