@@ -11,6 +11,9 @@ import android.util.Base64;
 
 /**
  * A class that provides object manipulation utilities
+ * 
+ * @author Joey Yore
+ * @version 1.0
  */
 public class ObjectUtil {
 
