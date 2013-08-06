@@ -27,4 +27,4 @@ Undeploy
 
     mvn android:undeploy
  
-__Note__: Always make sure to mvn clean install after code modification
+__Note__: Always make sure to mvn clean install after code modification.
