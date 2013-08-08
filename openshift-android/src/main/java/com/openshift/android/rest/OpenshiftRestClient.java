@@ -19,11 +19,23 @@ import org.apache.http.util.EntityUtils;
 import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.security.AuthorizationManager;
 
+/**
+ * Rest Client for the Application
+ * 
+ * @author Andrew Block
+ *
+ */
 public class OpenshiftRestClient {
 	
 	private DefaultHttpClient  client;
 	private AuthorizationManager authorizationManager;
 	
+	/**
+	 * Default constructor which takes an instance of an {@link AuthorizationManager} which contains the
+	 * user name and password used to authenticate with OpenShift
+	 * 
+	 * @param authorizationManager
+	 */
 	public OpenshiftRestClient(AuthorizationManager authorizationManager) {
 		
 		this.authorizationManager = authorizationManager;
@@ -39,6 +51,12 @@ public class OpenshiftRestClient {
 	}
 	
 	
+	/**
+	 * Performs the execution of the Rest Request
+	 * 
+	 * @param The request parameters for the Rest Client
+	 * @return The response from the Rest Client
+	 */
 	public RestResponse execute(RestRequest<? extends OpenshiftResource> request) {
 		
 		switch(request.getMethod()) {
@@ -55,6 +73,12 @@ public class OpenshiftRestClient {
 		
 	}
 	
+	/**
+	 * Performs the GET operation of the Rest Client
+	 * 
+	 * @param The request parameters for the Rest Client
+	 * @return The response from the Rest Client
+	 */
 	public RestResponse get(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpGet httpRequest = new HttpGet(request.getUrl());
@@ -80,6 +104,13 @@ public class OpenshiftRestClient {
 		return restResponse;
 	}
 	
+	
+	/**
+	 * Performs the DELETE operation of the Rest Client
+	 * 
+	 * @param The request parameters for the Rest Client
+	 * @return The response from the Rest Client
+	 */
 	public RestResponse delete(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpDelete httpRequest = new HttpDelete(request.getUrl());
@@ -106,6 +137,12 @@ public class OpenshiftRestClient {
 	}
 
 
+	/**
+	 * Performs the POST operation of the Rest Client
+	 * 
+	 * @param The request parameters for the Rest Client
+	 * @return The response from the Rest Client
+	 */
 	public RestResponse post(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpPost httpRequest = new HttpPost(request.getUrl());

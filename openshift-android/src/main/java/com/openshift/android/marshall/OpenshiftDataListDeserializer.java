@@ -12,10 +12,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.openshift.android.model.OpenshiftDataList;
 
+/**
+ * Custom Serializer which allows for the Serialization of a {@link OpenshiftDataList} wrapped List
+ * 
+ * @author Andrew Block
+ * 
+ * @see JsonDeserializer
+ * @see OpenshiftDataList
+ *
+ */
 @SuppressWarnings({"rawtypes","unchecked"})
 public class OpenshiftDataListDeserializer implements
 		JsonDeserializer<OpenshiftDataList> {
 
+	/* (non-Javadoc)
+	 * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+	 */
 	@Override
 	public OpenshiftDataList deserialize(JsonElement json, Type typeOfT,
 			JsonDeserializationContext context) throws JsonParseException {

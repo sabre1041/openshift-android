@@ -4,6 +4,14 @@ import java.io.Serializable;
 
 import com.openshift.android.model.OpenshiftResource;
 
+/**
+ * 
+ * The response from the Rest Service
+ * 
+ * @author Andrew Block
+ *
+ * @param <T>
+ */
 public class Response<T extends OpenshiftResource> implements Serializable {
 
 	private int status;

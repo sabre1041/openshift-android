@@ -19,6 +19,15 @@ import com.openshift.android.rest.RestMethod;
 import com.openshift.android.rest.RestRequest;
 import com.openshift.android.security.AuthorizationManager;
 
+/**
+ * Helper class to facilitate the invocation of the Openshift Service. Each type of Rest Based request
+ * will have a method defined within this class
+ * 
+ * @author Andrew Block
+ * 
+ * @see OpenshiftService
+ *
+ */
 public class OpenshiftServiceHelper {
 	private Context ctx;
 	private static OpenshiftServiceHelper instance;
@@ -31,6 +40,10 @@ public class OpenshiftServiceHelper {
 		this.ctx = ctx;
 	}
 	
+	/**
+	 * @param ctx The Android {@link Context}
+	 * @return An instance of the {@link OpenshiftServiceHelper}
+	 */
 	public static OpenshiftServiceHelper getInstance(Context ctx) {
 		if(instance==null){
 			instance = new OpenshiftServiceHelper(ctx);
@@ -38,6 +51,11 @@ public class OpenshiftServiceHelper {
 		return instance;
 	}
 	
+	/**
+	 * Method used to invoke the Openshift Service to list all domains attributed to a user
+	 * 
+	 * @see DomainResource
+	 */
 	public void listDomains() {
 		Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {}.getType();
 
@@ -48,7 +66,15 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains");
 		initService(restRequest);
 	}
-	
+
+
+	/**
+	 * Mehtod used to invoke the Openshift service to list all applications within the given domain name
+	 * 
+	 * @param domainName The domain name
+	 * 
+	 * @see ApplicationResource
+	 */
 	public void listApplications(String domainName) {
 		Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {}.getType();
 
@@ -60,6 +86,14 @@ public class OpenshiftServiceHelper {
 		initService(restRequest);
 	}	
 	
+	/**
+	 * Method used to invoke the Openshfit service to stop a given application within the given domain anme
+	 * 
+	 * @param domainName the name of the domain
+	 * @param application the name of the application
+	 * 
+	 * @see ApplicationResource
+	 */
 	public void stopApplication(String domainName, String application) {
 		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
 
@@ -72,6 +106,14 @@ public class OpenshiftServiceHelper {
 		initService(restRequest);
 	}	
 
+	/**
+	 * Method used to invoke the Openshfit service to start a given application within the given domain anme
+	 * 
+	 * @param domainName the name of the domain
+	 * @param application the name of the application
+	 * 
+	 * @see ApplicationResource
+	 */
 	public void startApplication(String domainName, String application) {
 		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
 
@@ -84,6 +126,14 @@ public class OpenshiftServiceHelper {
 		initService(restRequest);
 	}
 	
+	/**
+	 * Method used to invoke the Openshfit service to restart a given application within the given domain anme
+	 * 
+	 * @param domainName the name of the domain
+	 * @param application the name of the application
+	 * 
+	 * @see ApplicationResource
+	 */
 	public void restartApplication(String domainName, String application) {
 		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
 
@@ -96,6 +146,14 @@ public class OpenshiftServiceHelper {
 		initService(restRequest);
 	}
 	
+	/**
+	 * Method used to invoke the Openshfit service to delete a given application within the given domain anme
+	 * 
+	 * @param domainName the name of the domain
+	 * @param application the name of the application
+	 * 
+	 * @see ApplicationResource
+	 */
 	public void deleteApplication(String domainName, String application) {
 
 		RestRequest<OpenshiftResponse<ApplicationResource>> restRequest = new RestRequest<OpenshiftResponse<ApplicationResource>>();
@@ -106,6 +164,12 @@ public class OpenshiftServiceHelper {
 	}
 
 	
+	/**
+	 * Method used to invoke the Openshfit service to retrieve information for the current user
+	 * 
+	 * @see UserResource
+	 * 
+	 */
 	public void getUserInformation() {
 
 		Type type = new TypeToken<OpenshiftResponse<UserResource>>() {}.getType();
@@ -120,6 +184,13 @@ public class OpenshiftServiceHelper {
 		
 	}
 	
+	/**
+	 * Performs the invocation of the {@link OpenshiftService}
+	 * 
+	 * @param restRequest the {@link RestRequest} to perform
+	 * 
+	 * @see ResultReceiver
+	 */
 	private void initService(final RestRequest<? extends OpenshiftResource> restRequest) {
 		ResultReceiver serviceCallback = new ResultReceiver(null){
 

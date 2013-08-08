@@ -1,5 +1,6 @@
 package com.openshift.android.service;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,15 @@ import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.processor.Processor;
 import com.openshift.android.rest.RestRequest;
 
+/**
+ * 
+ * Android service class which will facilitate Rest based communication. This allows for the execution
+ * of Rest Services even when the current {@link Activity} has been stopped or paused 
+ * 
+ * @author Andrew Block
+ * 
+ * @see IntentService
+ */
 public class OpenshiftService extends IntentService {
 	
 	public static final String METHOD_EXTRA = "com.redhat.openshift.service.METHOD_EXTRA";
@@ -41,6 +51,9 @@ public class OpenshiftService extends IntentService {
 	
 	
 	
+	/**
+	 * Public Constructor
+	 */
 	public OpenshiftService() {
 		super("OpenshiftService");
 	}
@@ -117,6 +130,9 @@ public class OpenshiftService extends IntentService {
 		
 	}
 	
+	/**
+	 * @return the contents of the original {@link Bundle}
+	 */
 	protected Bundle getOriginalIntentBundle() {
 		Bundle originalRequest = new Bundle();
 		originalRequest.putParcelable(ORIGINAL_INTENT_EXTRA, mOriginalRequestIntent);

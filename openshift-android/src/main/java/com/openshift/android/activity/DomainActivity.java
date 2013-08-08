@@ -3,6 +3,7 @@ package com.openshift.android.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +28,14 @@ import com.openshift.android.rest.RestRequest;
 import com.openshift.android.security.AuthorizationManager;
 import com.openshift.android.service.OpenshiftServiceHelper;
 
+
+/** Displays a list of Domains owned by the currently logged in User
+ * 
+ * @author Andrew Block
+ * 
+ * @see Activity
+ *
+ */
 public class DomainActivity extends ListActivity {
 	
 	private BroadcastReceiver requestReceiver;
@@ -53,12 +62,18 @@ public class DomainActivity extends ListActivity {
 
 	}
 	
+	/**
+	 * Displays a logout option when the Menu button is pressed
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add("Logout");
 		return true;
 	}
 	
+	/**
+	 * Performs the action from a menu selection
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
@@ -87,6 +102,12 @@ public class DomainActivity extends ListActivity {
 		startActivity(intent);
 	}
 	
+	
+	/**
+	 * Shows a short toast display
+	 * 
+	 * @param message message to display
+	 */
 	private void showToast(String message) {
 		if(!isFinishing()){
 			Toast toast = Toast.makeText(this,message, Toast.LENGTH_SHORT);
@@ -106,6 +127,9 @@ public class DomainActivity extends ListActivity {
 		super.onPause();
 	}
 	
+	/**
+	 * Initializes the {@link IntentFilter} to listen for Rest Responses from the listing of domain operation.
+	 */
 	@Override
 	public void onResume() {
 		

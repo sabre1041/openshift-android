@@ -12,22 +12,41 @@ import com.openshift.android.rest.RestResponse;
 import com.openshift.android.security.AuthorizationManager;
 import com.openshift.android.service.OpenshiftCallback;
 
+
+/**
+ * Process the rest Request
+ * 
+ * @author Andrew Block
+ *
+ */
 public class Processor {
 	
 	private OpenshiftCallback callback;
 	
 	private Context ctx;
 	
+	/**
+	 * @param ctx The Android Context
+	 */
 	public Processor(Context ctx) {
 		this.ctx = ctx;
 	}
 	
 	
 	
+	/**
+	 * @param callback The callback for the Rest Client to invoke after it has finished executing
+	 */
 	public void setCallback(OpenshiftCallback callback) {
 		this.callback = callback;
 	}
 	
+	/**
+	 * Performs execution of the Rest Requst by invoking the Rest Client
+	 * 
+	 * @param request the Rest Request
+	 * 
+	 */
 	public void execute(RestRequest<? extends OpenshiftResource> request) {
 		AuthorizationManager authorizationManager = AuthorizationManager.getInstance(ctx);
 		

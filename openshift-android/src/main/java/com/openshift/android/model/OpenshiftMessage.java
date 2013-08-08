@@ -4,6 +4,14 @@ import java.io.Serializable;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model class representing Messages from the OpenShift Rest API
+ * 
+ * @author Andrew Block
+ * 
+ * @see SerializedName
+ *
+ */
 public class OpenshiftMessage implements Serializable {
 
 	@SerializedName("exit_code")

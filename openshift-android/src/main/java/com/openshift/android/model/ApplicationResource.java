@@ -2,6 +2,15 @@ package com.openshift.android.model;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Model class representing an OpenShift Application
+ * 
+ * @author Andrew Block
+ * 
+ * @see OpenshiftResource
+ * @see SerializedName
+ *
+ */
 public class ApplicationResource implements OpenshiftResource {
 
 	@SerializedName("app_url")

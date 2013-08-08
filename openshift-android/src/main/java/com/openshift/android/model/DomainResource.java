@@ -1,5 +1,14 @@
 package com.openshift.android.model;
 
+
+/**
+ * Model class representing an Openshift Domain
+ * 
+ * @author Andrew Block
+ * 
+ * @see OpenshiftResource
+ *
+ */
 public class DomainResource implements OpenshiftResource {
 	
 	private String id;

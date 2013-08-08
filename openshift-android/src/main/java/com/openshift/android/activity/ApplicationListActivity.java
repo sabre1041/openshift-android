@@ -33,6 +33,11 @@ import com.openshift.android.processor.OpenshiftActions;
 import com.openshift.android.rest.RestRequest;
 import com.openshift.android.service.OpenshiftServiceHelper;
 
+/**
+ * Displays a list of Applications within an OpenShift Domain
+ * @author Andrew Block
+ *
+ */
 public class ApplicationListActivity extends ListActivity {
 	
 	private BroadcastReceiver requestReceiver;
@@ -140,6 +145,11 @@ public class ApplicationListActivity extends ListActivity {
 
 	}
 	
+	/**
+	 * Shows a short toast display
+	 * 
+	 * @param message message to display
+	 */
 	private void showToast(String message) {
 		if(!isFinishing()){
 			Toast toast = Toast.makeText(this,message, Toast.LENGTH_SHORT);
@@ -148,7 +158,9 @@ public class ApplicationListActivity extends ListActivity {
 
 		}
 	}
-	
+	 /**
+	  * Displays a list of available options when a long click action is performed on the List
+	  */	
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 	    ContextMenuInfo menuInfo) {
@@ -166,6 +178,9 @@ public class ApplicationListActivity extends ListActivity {
 		menu.add("Delete Application");
 	}
 	
+	 /**
+	  * Performs an action initiated by a long click action
+	  */
 	 @Override 
      public boolean onContextItemSelected(MenuItem item)
      {
@@ -240,7 +255,12 @@ public class ApplicationListActivity extends ListActivity {
 		 return super.onContextItemSelected(item);
      }
 	 
-	 private void applicationActionResponse(RestRequest<? extends OpenshiftResource> restRequest,  String successMessage, String action) {
+	 /**
+	 * @param restRequest the rest request
+	 * @param successMessage the message to display
+	 * @param action the action which was performed
+	 */
+	private void applicationActionResponse(RestRequest<? extends OpenshiftResource> restRequest,  String successMessage, String action) {
 			
 			if(restRequest.getStatus()==200){	
 				if(progressDialog != null && progressDialog.isShowing()) {

@@ -1,5 +1,11 @@
 package com.openshift.android.rest;
 
+/**
+ * Raw Rest Client Response. Data is returned in the form of a {@link String} prior to Serialization
+ * 
+ * @author Andrew Block
+ *
+ */
 public class RestResponse {
 	
 	private int statusCode;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.Toast;
 
+@Deprecated
 public class OpenshiftActivity extends Activity {
 		
 //	private BroadcastReceiver requestReceiver;

@@ -9,6 +9,14 @@ import android.os.ResultReceiver;
 
 import com.openshift.android.model.OpenshiftResource;
 
+/**
+ * The model class for a Rest based request
+ * 
+ * @author Andrew Block
+ *
+ * @see Serializable
+ * @param <T> The Type of Resource
+ */
 public class RestRequest<T extends OpenshiftResource> implements Serializable {
 
 	private OpenshiftResource response;

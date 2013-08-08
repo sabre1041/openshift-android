@@ -1,6 +1,15 @@
 package com.openshift.android.model;
 
 
+
+/**
+ * Model class representing an OpenShift User
+ * 
+ * @author Andrew Block
+ * 
+ * @see OpenshiftResource
+ *
+ */
 public class UserResource implements OpenshiftResource {
 	
 	private String login;

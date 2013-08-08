@@ -12,6 +12,15 @@ import android.widget.TextView;
 import com.openshift.android.R;
 import com.openshift.android.model.ApplicationResource;
 
+/**
+ * Adapter which provides a menu of Openshift Applications for a User
+ * 
+ * @author Andrew Block
+ * 
+ * @see ArrayAdapter
+ * @see ApplicationResource
+ *
+ */
 public class ApplicationAdapter extends ArrayAdapter<ApplicationResource> {
 
 	private List<ApplicationResource> objects;

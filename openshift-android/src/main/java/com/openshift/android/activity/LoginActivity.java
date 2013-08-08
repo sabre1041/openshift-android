@@ -20,6 +20,15 @@ import com.openshift.android.rest.RestRequest;
 import com.openshift.android.security.AuthorizationManager;
 import com.openshift.android.service.OpenshiftServiceHelper;
 
+/**
+ * Primary entry point to the application. Allows the user to use their OpenShift 
+ * account credentials to access OpenShift resources
+ * 
+ * @author Andrew Block
+ * 
+ * @see Activity
+ *
+ */
 public class LoginActivity extends Activity {
 	
 	private EditText openshiftAccount;
@@ -60,6 +69,11 @@ public class LoginActivity extends Activity {
 	    
 	}
 	
+	/**
+	 * Method invoked when the Login button is clicked
+	 * 
+	 * @param v the View
+	 */
     public void loginClick(View v) {
     	
     	if(openshiftAccount.getText().toString().length()==0 || openshiftPassword.getText().toString().trim().length()==0) {

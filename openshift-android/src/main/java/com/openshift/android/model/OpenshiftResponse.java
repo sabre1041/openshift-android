@@ -6,6 +6,16 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 
+/**
+ * @author Andrew Block
+ *
+ * @param <T> The type of Openshift Resource
+ * 
+ * @see OpenshiftResource
+ * @see OpenshiftMessage
+ * @see SerializedName
+ * 
+ */
 public class OpenshiftResponse<T extends OpenshiftResource> implements OpenshiftResource  {
 	@SerializedName("api_version")
 	private String apiVersion;

@@ -1,5 +1,17 @@
 package com.openshift.android.processor;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+
+
+/**
+ * Utility class defining constants for filtering Broadcast Messages
+ * 
+ * @author Andrew Block
+ * @see BroadcastReceiver
+ * @see IntentFilter
+ *
+ */
 public class OpenshiftActions {
 	
 	public static final String LIST_DOMAINS = "com.redhat.openshift.LIST_DOMAINS";

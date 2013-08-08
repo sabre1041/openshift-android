@@ -5,6 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.openshift.android.marshall.OpenshiftDataListDeserializer;
 import com.openshift.android.model.OpenshiftDataList;
 
+/**
+ * Utility class for providing instances of the Gson Serialization library
+ * 
+ * @author Andrew Block
+ *
+ */
 public class GsonSingleton {
 	
 	static {
@@ -15,8 +21,16 @@ public class GsonSingleton {
 	
 	private static final Gson gson;
 	
+	
+	/**
+	 * Private constructor
+	 */
 	private GsonSingleton() {}
 	
+	
+	/**
+	 * @return The gson instance
+	 */
 	public static Gson getInstance() {
 		return gson;
 	}

@@ -3,6 +3,7 @@ package com.openshift.android.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
+@Deprecated
 public class ApplicationViewActivity extends Activity {
 
 	/** Called when the activity is first created. */
