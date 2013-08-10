@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.security.AuthorizationManager;
 
@@ -82,7 +83,7 @@ public class OpenshiftRestClient {
 	public RestResponse get(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpGet httpRequest = new HttpGet(request.getUrl());
-		httpRequest.setHeader("Accept","application/json");
+		httpRequest.setHeader("Accept","application/json; version="+OpenshiftConstants.REST_API_VERSION);
 
 		RestResponse restResponse = new RestResponse();
 		
@@ -114,7 +115,7 @@ public class OpenshiftRestClient {
 	public RestResponse delete(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpDelete httpRequest = new HttpDelete(request.getUrl());
-		httpRequest.setHeader("Accept","application/json");
+		httpRequest.setHeader("Accept","application/json; version="+OpenshiftConstants.REST_API_VERSION);
 
 		RestResponse restResponse = new RestResponse();
 		
@@ -146,7 +147,7 @@ public class OpenshiftRestClient {
 	public RestResponse post(RestRequest<? extends OpenshiftResource> request) {
 		
 		HttpPost httpRequest = new HttpPost(request.getUrl());
-		httpRequest.setHeader("Accept","application/json");
+		httpRequest.setHeader("Accept","application/json; version="+OpenshiftConstants.REST_API_VERSION);
 
 		RestResponse restResponse = new RestResponse();
 		

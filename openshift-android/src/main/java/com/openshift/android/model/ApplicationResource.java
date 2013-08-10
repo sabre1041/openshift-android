@@ -1,5 +1,7 @@
 package com.openshift.android.model;
 
+import java.util.Date;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -20,23 +22,37 @@ public class ApplicationResource implements OpenshiftResource {
 	private String buildJobUrl;
 	
 	@SerializedName("building_app")
-	private String buildingApplication;
+	private String buildingApp;
+	
+	@SerializedName("building_with")
+	private String buildingWith;
 	
 	@SerializedName("creation_time")
-	private String creationTime;
+	private Date creationTime;
+	
+	@SerializedName("domain_id")
+	private String domainId;
 	
 	private String framework;
 	
-	@SerializedName("gearCount")
+	@SerializedName("gear_count")
 	private String gearCount;
+	
+	@SerializedName("gear_profile")
+	private String gearProfile;
 	
 	@SerializedName("git_url")
 	private String gitUrl;
 	
+	@SerializedName("health_check_path")
+	private String healthCheckPath;
+	
 	private String name;
 	
-	@SerializedName("domain_id")
-	private String domain;
+	private boolean scalable;
+	
+	@SerializedName("ssh_url")
+	private String sshUrl;
 
 	public String getApplicationUrl() {
 		return applicationUrl;
@@ -54,22 +70,46 @@ public class ApplicationResource implements OpenshiftResource {
 		this.buildJobUrl = buildJobUrl;
 	}
 
-	public String getBuildingApplication() {
-		return buildingApplication;
+	public String getBuildingApp() {
+		return buildingApp;
 	}
 
-	public void setBuildingApplication(String buildingApplication) {
-		this.buildingApplication = buildingApplication;
+	
+
+	
+	public String getBuildingWith() {
+		return buildingWith;
 	}
 
-	public String getCreationTime() {
+	public void setBuildingWith(String buildingWith) {
+		this.buildingWith = buildingWith;
+	}
+
+	public void setBuildingApp(String buildingApp) {
+		this.buildingApp = buildingApp;
+	}
+	
+	public void setBuildingApplication(String buildingApp) {
+		this.buildingApp = buildingApp;
+	}
+
+	public Date getCreationTime() {
 		return creationTime;
 	}
-
-	public void setCreationTime(String creationTime) {
+	
+	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
 	}
 
+
+	public String getDomainId() {
+		return domainId;
+	}
+
+	public void setDomainId(String domainId) {
+		this.domainId = domainId;
+	}
+	
 	public String getFramework() {
 		return framework;
 	}
@@ -85,7 +125,15 @@ public class ApplicationResource implements OpenshiftResource {
 	public void setGearCount(String gearCount) {
 		this.gearCount = gearCount;
 	}
+	
+	public String getGearProfile() {
+		return gearProfile;
+	}
 
+	public void setGearProfile(String gearProfile) {
+		this.gearProfile = gearProfile;
+	}
+	
 	public String getGitUrl() {
 		return gitUrl;
 	}
@@ -93,7 +141,23 @@ public class ApplicationResource implements OpenshiftResource {
 	public void setGitUrl(String gitUrl) {
 		this.gitUrl = gitUrl;
 	}
+	
 
+	public String getHealthCheckPath() {
+		return healthCheckPath;
+	}
+
+	public void setHealthCheckPath(String healthCheckPath) {
+		this.healthCheckPath = healthCheckPath;
+	}
+
+	public boolean isScalable() {
+		return scalable;
+	}
+
+	public void setScalable(boolean scalable) {
+		this.scalable = scalable;
+	}
 	public String getName() {
 		return name;
 	}
@@ -102,17 +166,20 @@ public class ApplicationResource implements OpenshiftResource {
 		this.name = name;
 	}
 	
+
+	public String getSshUrl() {
+		return sshUrl;
+	}
+
+	public void setSshUrl(String sshUrl) {
+		this.sshUrl = sshUrl;
+	}
+	
 	@Override
 	public String toString() {
 		return name;
 	}
 
-	public String getDomain() {
-		return domain;
-	}
 
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
 	
 }

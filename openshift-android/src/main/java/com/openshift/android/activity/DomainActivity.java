@@ -147,10 +147,11 @@ public class DomainActivity extends ListActivity {
 				
 				if(domainRequest.getStatus()==200){	
 					domainAdapter.clear();
-					Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains Size: "+domainList.size());
 					
 					
 					for(int i = 0; i<response.getData().getList().size();i++){ 
+						Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains : "+response.getData().getList().get(i).getName());
+
 						domainAdapter.insert(response.getData().getList().get(i), i);
 					}
 					

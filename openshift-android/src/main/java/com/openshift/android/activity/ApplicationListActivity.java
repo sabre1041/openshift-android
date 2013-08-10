@@ -141,7 +141,7 @@ public class ApplicationListActivity extends ListActivity {
 		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
 		this.registerReceiver(requestReceiver, filter);
 		
-		mOpenshiftServiceHelper.listApplications(domainResource.getId());
+		mOpenshiftServiceHelper.listApplications(domainResource.getName());
 
 	}
 	
@@ -199,7 +199,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Stopping Application");
 				progressDialog.show();
 				
-				mOpenshiftServiceHelper.stopApplication(appResource.getDomain(), appResource.getName());
+				mOpenshiftServiceHelper.stopApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Start Application")) {
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
@@ -207,7 +207,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Starting Application");
 				progressDialog.show();
 				
-				mOpenshiftServiceHelper.startApplication(appResource.getDomain(), appResource.getName());
+				mOpenshiftServiceHelper.startApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Restart Application")) {
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
@@ -215,7 +215,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Restarting Application");
 				progressDialog.show();
 				
-				mOpenshiftServiceHelper.restartApplication(appResource.getDomain(), appResource.getName());
+				mOpenshiftServiceHelper.restartApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Delete Application")) {
 				
@@ -235,7 +235,7 @@ public class ApplicationListActivity extends ListActivity {
 						progressDialog.setMessage("Deleting Application");
 						progressDialog.show();
 						
-						mOpenshiftServiceHelper.deleteApplication(appResource.getDomain(), appResource.getName());
+						mOpenshiftServiceHelper.deleteApplication(appResource.getDomainId(), appResource.getName());
 						
 					}
 				});

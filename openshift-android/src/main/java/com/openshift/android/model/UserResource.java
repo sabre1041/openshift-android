@@ -1,5 +1,9 @@
 package com.openshift.android.model;
 
+import java.util.Date;
+
+import com.google.gson.annotations.SerializedName;
+
 
 
 /**
@@ -12,9 +16,58 @@ package com.openshift.android.model;
  */
 public class UserResource implements OpenshiftResource {
 	
+	@SerializedName("consumed_gears")
+	private String consumedGears;
+	
+	@SerializedName("created_at")
+	private Date createdAt;
+	
+	private String id;
+	
 	private String login;
+	
+	@SerializedName("max_gears")
 	private String maxGears;
+	
+	public String getConsumedGears() {
+		return consumedGears;
+	}
+	public void setConsumedGears(String consumedGears) {
+		this.consumedGears = consumedGears;
+	}
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPlanId() {
+		return planId;
+	}
+	public void setPlanId(String planId) {
+		this.planId = planId;
+	}
+	public String getUsageAccountId() {
+		return usageAccountId;
+	}
+	public void setUsageAccountId(String usageAccountId) {
+		this.usageAccountId = usageAccountId;
+	}
+	@SerializedName("plan_id")
+	private String planId;
+	
+	@SerializedName("plan_state")
 	private String planState;
+	
+	@SerializedName("usage_account_id")
+	private String usageAccountId; 
+	
 	public String getLogin() {
 		return login;
 	}

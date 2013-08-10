@@ -11,14 +11,14 @@ package com.openshift.android.model;
  */
 public class DomainResource implements OpenshiftResource {
 	
-	private String id;
+	private String name;
 	private String suffix;
 	
-	public String getId() {
-		return id;
+	public String getName() {
+		return name;
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.name = id;
 	}
 	public String getSuffix() {
 		return suffix;
@@ -29,7 +29,7 @@ public class DomainResource implements OpenshiftResource {
 	
 	@Override
 	public String toString() {
-		return this.getId();
+		return this.getName();
 	}
 
 }
