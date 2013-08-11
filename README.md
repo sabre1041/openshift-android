@@ -28,3 +28,5 @@ Undeploy
     mvn android:undeploy
  
 __Note__: Always make sure to mvn clean install after code modification.
+
+OpenShift Rest API 1.6
