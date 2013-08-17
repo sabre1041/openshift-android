@@ -1,4 +1,4 @@
-package com.openshift.android.util;
+package com.openshift.android.cache;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.openshift.android.util.ObjectUtil;
 
 /**
  * A class that provides a filesystem based persistence store

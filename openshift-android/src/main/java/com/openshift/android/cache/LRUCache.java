@@ -1,4 +1,4 @@
-package com.openshift.android.util;
+package com.openshift.android.cache;
 
 import java.util.Map;
 import java.util.HashMap;

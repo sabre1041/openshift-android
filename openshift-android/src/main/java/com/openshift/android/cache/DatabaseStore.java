@@ -1,4 +1,4 @@
-package com.openshift.android.util;
+package com.openshift.android.cache;
 
 import java.io.IOException;
 import java.io.StreamCorruptedException;
@@ -11,6 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
+
+import com.openshift.android.util.ObjectUtil;
 
 /**
  * This class allows for a database backed persistence store.

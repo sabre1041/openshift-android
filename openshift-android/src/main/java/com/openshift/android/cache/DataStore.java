@@ -1,4 +1,4 @@
-package com.openshift.android.util;
+package com.openshift.android.cache;
 
 /**
  * An interface that provides an access contract for anything
