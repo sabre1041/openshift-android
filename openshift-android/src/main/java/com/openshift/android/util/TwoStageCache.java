@@ -1,6 +1,8 @@
 package com.openshift.android.util;
 
 import android.content.Context;
+import java.lang.IllegalArgumentException;
+import java.lang.IllegalStateException;
 
 /**
  * Class implementing a two stage caching mechanism
@@ -27,91 +29,90 @@ public class TwoStageCache {
 	/** Option for using a database backed persistence store */
 	public static final int DATABASE_CACHE = 1;
 
+
+	private static TwoStageCache instance = null;
 	@SuppressWarnings("unused")
-	private Context context;
-	private int dataStoreOption;
+	private static Context context;
+	private static int dataStoreOption;
 	
 	private static LRUCache<String,Object> memCache;
-	private DataStore diskCache;
+	private static DataStore diskCache;
 	
-	
-	private DataStore selectDataStore(Context context, String contextRoot, int option) {
-		switch(option) {
-			case FILESYSTEM_CACHE:
-				return new FileSystemStore(context,contextRoot);
-			case DATABASE_CACHE:
-				return new DatabaseStore(context,contextRoot);
-			default:
-				return new FileSystemStore(context,contextRoot);
-		}
+	public TwoStageCache() {
 	}
-	
+
+
 	/**
-	 * Simple constructor
+	 * Get Singleton Instance
+	 *
+	 * @throws IllegalArgumentException Throws if the instance has not been initialized with an Android context.
+	 */
+	public static TwoStageCache getInstance() throws IllegalArgumentException {
+		if(instance == null) {
+			throw new IllegalArgumentException("Cache has not been initialized with an Android context");
+		}
+		return instance;
+	}
+
+    /**
+	 * Simple Instance Initialization
 	 *
 	 * @param context The android context to use
+	 * @return The Singleton Instance
 	 */
-	public TwoStageCache(Context context) {
-		this.context = context;
-		memCache = new LRUCache<String, Object>();
-		diskCache = new FileSystemStore(context);
+	public static TwoStageCache getInstance(Context context) {
+		if(instance == null) {
+			instance = new TwoStageCache();
+			instance.context = context;
+			memCache = new LRUCache<String, Object>();
+			diskCache = new FileSystemStore(context);
+		}
+		return instance;
 	}
-	
+
 	/**
-	 * Persistence Select Constructor
+	 * Persistence Instance Initialization
 	 *
 	 * Allows you to select which type of persistence store to
 	 * use for the second stage cache.
 	 *
 	 * @param context The android context to use
 	 * @param dataStoreOption The datastore type option to use.
+	 * @return The Singleton Instance
 	 */
-	public TwoStageCache(Context context, int dataStoreOption) {
-		this.context = context;
-		this.dataStoreOption = dataStoreOption;
-		memCache = new LRUCache<String,Object>();
-		diskCache = selectDataStore(context,"",dataStoreOption);
+	public static TwoStageCache getInstance(Context context, int dataStoreOption) {
+		if(instance == null) {
+			instance = new TwoStageCache();
+			instance.context = context;
+			instance.dataStoreOption = dataStoreOption;
+			memCache = new LRUCache<String,Object>();
+			diskCache = selectDataStore(context,"",dataStoreOption);
+			instance = new TwoStageCache();
+		}
+		return instance;
 	}
-	
+
 	/**
-	 * LRU Config Constructor
+	 * LRU Config Instance Initialization
 	 *
-	 * This constructor allows you to select the persistence cache type,
+	 * This insance initialization allows you to select the persistence cache type,
 	 * as well as provide configuration points for the in-memory cache.
 	 *
 	 * @param context The android context to use
 	 * @param dataStoreOption The datastore type option to use.
 	 * @param age The time (in milliseconds) that an entry can exist in-memory
 	 * @param size The maximum number of entries in the in-memory cache.
+	 * @return The Singleton Instance
 	 */
-	public TwoStageCache(Context context, int dataStoreOption, long age, int size) {
-		this.context = context;
-		this.dataStoreOption = dataStoreOption;
-		memCache = new LRUCache<String,Object>(age,size);
-		diskCache = selectDataStore(context,"",dataStoreOption);
-	}
-	
-
-	/**
-	 * Namespace Constructor
-	 *
-	 * This constructor allows configuration of the in-memory cache,
-	 * the ability to select a persistence store type, and provide
-	 * a namespace so multiple two-stage caches can exist in an application
-	 * without collision.
-	 *
-	 * @param context The android context to use
-	 * @param dataStoreOption The datastore type option to use.
-	 * @param age The time (in milliseconds) that an entry can exist in-memory
-	 * @param size The maximum number of entries in the in-memory cache.
-	 * @param contextRoot The context-root the namespace lives under
-	 */
-
-	public TwoStageCache(Context context, int dataStoreOption, long age, int size, String contextRoot) {
-		this.context = context;
-		this.dataStoreOption = dataStoreOption;
-		memCache = new LRUCache<String,Object>(age,size);
-		diskCache = selectDataStore(context,contextRoot,dataStoreOption);
+	public static TwoStageCache getInstance(Context context, int dataStoreOption, long age, int size) {
+		if(instance == null) {
+			instance = new TwoStageCache();
+			instance.context = context;
+			instance.dataStoreOption = dataStoreOption;
+			memCache = new LRUCache<String,Object>(age,size);
+			diskCache = selectDataStore(context,"",dataStoreOption);
+		}
+		return instance;			
 	}
 	
 	/**
@@ -126,9 +127,14 @@ public class TwoStageCache {
 	 * 
 	 * @param key The key to search for
 	 * @return The retrieved object or null
+	 * @throws IllegalStateException Throws when an instance is not initialized
 	 */
-	public Object get(String key) {
-		
+	public static Object get(String key) throws IllegalStateException {
+	
+		if(instance == null) {
+			throw new IllegalStateException("Instance not initialized");
+		}
+	
 		Object o = memCache.get(key);
 		if(o == null) {
 			o = diskCache.get(key);
@@ -146,8 +152,13 @@ public class TwoStageCache {
 	 *
 	 * @param key The key to insert/update
 	 * @param value The object to store
+	 * @throws IllegalStateException Throws when an instance is not initialized
 	 */
-	public void put(String key,Object value) {
+	public static void put(String key,Object value) throws IllegalStateException {
+
+		if(instance == null) {
+			throw new IllegalStateException("Instance not initialized");
+		}
 		
 		memCache.put(key, value);	
 		if(dataStoreOption == DATABASE_CACHE) {
@@ -159,6 +170,17 @@ public class TwoStageCache {
 			}
 		} else {
 			diskCache.create(key, value);
+		}
+	}
+
+	private static DataStore selectDataStore(Context context, String contextRoot, int option) {
+		switch(option) {
+			case FILESYSTEM_CACHE:
+				return new FileSystemStore(context,contextRoot);
+			case DATABASE_CACHE:
+				return new DatabaseStore(context,contextRoot);
+			default:
+				return new FileSystemStore(context,contextRoot);
 		}
 	}
 }
