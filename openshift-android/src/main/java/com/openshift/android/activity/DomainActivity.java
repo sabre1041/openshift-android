@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.openshift.android.R;
+import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
@@ -135,6 +136,13 @@ public class DomainActivity extends ListActivity {
 		
 		super.onResume();
 		
+		// Check cache and display
+		OpenshiftResponse<OpenshiftDataList<DomainResource>> cacheResponse = (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.get(OpenshiftActions.LIST_DOMAINS);
+		
+		if(cacheResponse != null) {
+			displayList(cacheResponse);
+		}
+		
 		IntentFilter filter = new IntentFilter(OpenshiftActions.LIST_DOMAINS);
 		requestReceiver = new BroadcastReceiver() {
 
@@ -146,19 +154,8 @@ public class DomainActivity extends ListActivity {
 				OpenshiftResponse<OpenshiftDataList<DomainResource>> response = (OpenshiftResponse<OpenshiftDataList<DomainResource>>) domainRequest.getResponse();
 				
 				if(domainRequest.getStatus()==200){	
-					domainAdapter.clear();
 					
-					
-					for(int i = 0; i<response.getData().getList().size();i++){ 
-						Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains : "+response.getData().getList().get(i).getName());
-
-						domainAdapter.insert(response.getData().getList().get(i), i);
-					}
-					
-					domainAdapter.setNotifyOnChange(true);					
-					domainAdapter.notifyDataSetChanged();
-
-
+					displayList(response);
 				}
 				else {
 					showToast("Failed to Retrieve Domain Information: "+domainRequest.getMessage());
@@ -173,6 +170,27 @@ public class DomainActivity extends ListActivity {
 		this.registerReceiver(requestReceiver, filter);
 		
 		mOpenshiftServiceHelper.listDomains();
+
+	}
+	
+	/**
+	 * Binds the Domain Response Data to the List
+	 * 
+	 * @param response The response data to fill the adapter
+	 */
+	private void displayList(OpenshiftResponse<OpenshiftDataList<DomainResource>> response) {
+		
+		domainAdapter.clear();
+		
+		
+		for(int i = 0; i<response.getData().getList().size();i++){ 
+			Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains : "+response.getData().getList().get(i).getName());
+
+			domainAdapter.insert(response.getData().getList().get(i), i);
+		}
+		
+		domainAdapter.setNotifyOnChange(true);					
+		domainAdapter.notifyDataSetChanged();
 
 	}
 

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
+import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
@@ -87,6 +88,15 @@ public class ApplicationListActivity extends ListActivity {
 		filter.addAction(OpenshiftActions.START_APPLICATION);
 		filter.addAction(OpenshiftActions.RESTART_APPLICATION);
 		filter.addAction(OpenshiftActions.DELETE_APPLICATION);
+		
+		
+		// Check cache and display
+		OpenshiftResponse<OpenshiftDataList<ApplicationResource>> cacheResponse = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.get(OpenshiftActions.LIST_APPLICATIONS);
+		
+		if(cacheResponse != null) {
+			displayList(cacheResponse);
+		}
+		
 		requestReceiver = new BroadcastReceiver() {
 
 			@Override
@@ -99,17 +109,7 @@ public class ApplicationListActivity extends ListActivity {
 					OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) applicationRequest.getResponse();
 					
 					if(applicationRequest.getStatus()==200){	
-						applicationAdapter.clear();
-						Log.v(ApplicationListActivity.class.getPackage().getName(),"Retrieved Application Size Size: "+applicationList.size());
-						
-						
-						for(int i = 0; i<response.getData().getList().size();i++){ 
-							applicationAdapter.insert(response.getData().getList().get(i), i);
-						}
-						
-						applicationAdapter.setNotifyOnChange(true);					
-						applicationAdapter.notifyDataSetChanged();
-	
+						displayList(response);	
 	
 					}
 					else {
@@ -277,6 +277,20 @@ public class ApplicationListActivity extends ListActivity {
 			}					
 
 	 }
+	
+	
+	private void displayList(OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
+		applicationAdapter.clear();
+		Log.v(ApplicationListActivity.class.getPackage().getName(),"Retrieved Application Size Size: "+applicationList.size());
+		
+		
+		for(int i = 0; i<response.getData().getList().size();i++){ 
+			applicationAdapter.insert(response.getData().getList().get(i), i);
+		}
+		
+		applicationAdapter.setNotifyOnChange(true);					
+		applicationAdapter.notifyDataSetChanged();
+	}
 	
 	
 

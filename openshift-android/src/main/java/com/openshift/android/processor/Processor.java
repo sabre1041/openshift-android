@@ -3,10 +3,12 @@ package com.openshift.android.processor;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.GsonSingleton;
 import com.openshift.android.rest.OpenshiftRestClient;
+import com.openshift.android.rest.RestMethod;
 import com.openshift.android.rest.RestRequest;
 import com.openshift.android.rest.RestResponse;
 import com.openshift.android.security.AuthorizationManager;
@@ -59,6 +61,11 @@ public class Processor {
 			
 			OpenshiftResponse<? extends OpenshiftResource> openshiftResponse = gson.fromJson(restResponse.getData(), request.getType());
 			request.setResponse(openshiftResponse);
+			
+			if(RestMethod.GET.equals(request.getMethod())) {
+				// Put in Cache
+				TwoStageCache.put(request.getIntentActionName(), openshiftResponse);	
+			}
 		}
 		
 		request.setStatus(restResponse.getStatusCode());

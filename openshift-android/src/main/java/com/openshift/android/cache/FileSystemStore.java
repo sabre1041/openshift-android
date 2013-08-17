@@ -91,8 +91,8 @@ public class FileSystemStore implements DataStore {
 			o = ObjectUtil.stringToObject(readFile(rootDir + key, context));
 		} catch (FileNotFoundException e) {
 			//TODO: How do we want to handle a fail here?
-			Toast toast = Toast.makeText(context, "Failed to get fs record", Toast.LENGTH_LONG);
-			toast.show();
+//			Toast toast = Toast.makeText(context, "Failed to get fs record", Toast.LENGTH_LONG);
+//			toast.show();
 		} catch (IOException e) {
 			//TODO: How do we want to handle a fail here?
 			Toast toast = Toast.makeText(context, "Failed to get fs record", Toast.LENGTH_LONG);

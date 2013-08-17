@@ -69,7 +69,7 @@ public class OpenshiftServiceHelper {
 
 
 	/**
-	 * Mehtod used to invoke the Openshift service to list all applications within the given domain name
+	 * Method used to invoke the Openshift service to list all applications within the given domain name
 	 * 
 	 * @param domainName The domain name
 	 * 

@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.openshift.android.R;
+import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.model.UserResource;
 import com.openshift.android.processor.OpenshiftActions;
@@ -49,6 +50,10 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
+	    
+	    // Initialize Cache
+	    TwoStageCache.getInstance(this);
+	    
 	    
 	    authenticationManager = AuthorizationManager.getInstance(this);
 	    
@@ -137,7 +142,7 @@ public class LoginActivity extends Activity {
 		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
 		this.registerReceiver(requestReceiver, filter);
 		
-		mOpenshiftServiceHelper.listDomains();
+//		mOpenshiftServiceHelper.listDomains();
 
 	}
 
