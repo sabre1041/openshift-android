@@ -135,14 +135,7 @@ public class DomainActivity extends ListActivity {
 	public void onResume() {
 		
 		super.onResume();
-		
-		// Check cache and display
-		OpenshiftResponse<OpenshiftDataList<DomainResource>> cacheResponse = (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.get(OpenshiftActions.LIST_DOMAINS);
-		
-		if(cacheResponse != null) {
-			displayList(cacheResponse);
-		}
-		
+				
 		IntentFilter filter = new IntentFilter(OpenshiftActions.LIST_DOMAINS);
 		requestReceiver = new BroadcastReceiver() {
 
@@ -169,8 +162,12 @@ public class DomainActivity extends ListActivity {
 		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
 		this.registerReceiver(requestReceiver, filter);
 		
-		mOpenshiftServiceHelper.listDomains();
+		OpenshiftResponse<OpenshiftDataList<DomainResource>> cachedDomainList = mOpenshiftServiceHelper.listDomains();
 
+		if(cachedDomainList != null) {
+			displayList(cachedDomainList);
+		}
+		
 	}
 	
 	/**

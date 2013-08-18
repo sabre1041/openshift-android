@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
-import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
@@ -89,14 +88,6 @@ public class ApplicationListActivity extends ListActivity {
 		filter.addAction(OpenshiftActions.RESTART_APPLICATION);
 		filter.addAction(OpenshiftActions.DELETE_APPLICATION);
 		
-		
-		// Check cache and display
-		OpenshiftResponse<OpenshiftDataList<ApplicationResource>> cacheResponse = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.get(OpenshiftActions.LIST_APPLICATIONS);
-		
-		if(cacheResponse != null) {
-			displayList(cacheResponse);
-		}
-		
 		requestReceiver = new BroadcastReceiver() {
 
 			@Override
@@ -141,7 +132,12 @@ public class ApplicationListActivity extends ListActivity {
 		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
 		this.registerReceiver(requestReceiver, filter);
 		
-		mOpenshiftServiceHelper.listApplications(domainResource.getName());
+		
+		OpenshiftResponse<OpenshiftDataList<ApplicationResource>> applicationList = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) mOpenshiftServiceHelper.listApplications(domainResource.getName());
+		
+		if(applicationList != null) {
+			displayList(applicationList);
+		}
 
 	}
 	
@@ -279,6 +275,12 @@ public class ApplicationListActivity extends ListActivity {
 	 }
 	
 	
+	
+	/**
+	 * Binds the Application Response Data to the List
+	 * 
+	 * @param response The response data to fill the adapter
+	 */
 	private void displayList(OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
 		applicationAdapter.clear();
 		Log.v(ApplicationListActivity.class.getPackage().getName(),"Retrieved Application Size Size: "+applicationList.size());
