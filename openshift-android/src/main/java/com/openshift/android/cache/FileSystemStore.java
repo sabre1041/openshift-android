@@ -1,13 +1,13 @@
 package com.openshift.android.cache;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -49,10 +49,9 @@ public class FileSystemStore implements DataStore {
 	
 	private void writeFile(String filename, String data, Context ctx) throws FileNotFoundException, IOException {
 		FileOutputStream fos = ctx.openFileOutput(filename,Context.MODE_PRIVATE);
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(data.getBytes());
-		oos.close();
-		fos.close();
+		BufferedWriter bw = new BufferedWriter(fos);
+		bw.write(data);
+		bw.close();
 	}
 	
 	private String readFile(String filename, Context ctx) throws FileNotFoundException, IOException {
