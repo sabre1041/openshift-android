@@ -70,7 +70,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains");
 		initService(restRequest);
 		
-		return (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.get(OpenshiftActions.LIST_DOMAINS);
+		return (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_DOMAINS);
 	}
 
 
@@ -93,7 +93,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains/"+domainName+"/applications");
 		initService(restRequest);
 		
-		return (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.get(OpenshiftActions.LIST_APPLICATIONS);
+		return (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_APPLICATIONS);
 	}	
 	
 	/**
@@ -192,7 +192,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"user");
 		initService(restRequest);
 
-		return (OpenshiftResponse<OpenshiftDataList<UserResource>>) TwoStageCache.get(OpenshiftActions.USER_DETAIL);
+		return (OpenshiftResponse<OpenshiftDataList<UserResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.USER_DETAIL);
 	}
 	
 	/**
