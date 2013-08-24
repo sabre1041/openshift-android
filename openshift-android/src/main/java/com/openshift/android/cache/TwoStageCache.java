@@ -173,6 +173,26 @@ public class TwoStageCache {
 		}
 	}
 
+	/**
+	 * Remove an object from the cache
+	 *
+	 * This method will remove an entry in the cache
+	 *
+	 * @param key The key to insert/update
+	 * @return The object stored under the key being removed for each cache
+	 * @throws IllegalStateException Throws when an instance is not initialized
+	 */
+	public static Object[] remove(String key) throws IllegalStateException {
+		if(instance == null) {
+			throw new IllegalStateException("Instance not initialized");
+		}
+
+		Object[] o = new Object[] {memCache.remove(key),diskCache.get(key)};
+		diskCache.delete(key);
+		return o;
+	}
+
+
 	private static DataStore selectDataStore(Context context, String contextRoot, int option) {
 		switch(option) {
 			case FILESYSTEM_CACHE:
