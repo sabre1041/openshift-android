@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 
 import com.google.gson.reflect.TypeToken;
+import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
@@ -51,12 +52,15 @@ public class OpenshiftServiceHelper {
 		return instance;
 	}
 	
+
 	/**
-	 * Method used to invoke the Openshift Service to list all domains attributed to a user
+	 * Method used to invoke the OpenShift Service to list all domains attributed to a user
 	 * 
+	 * @return the cached {@link DomainResource} item
 	 * @see DomainResource
+	 * 
 	 */
-	public void listDomains() {
+	public OpenshiftResponse<OpenshiftDataList<DomainResource>> listDomains() {
 		Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {}.getType();
 
 		RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>> restRequest = new RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>>();
@@ -65,17 +69,21 @@ public class OpenshiftServiceHelper {
 		restRequest.setIntentActionName(OpenshiftActions.LIST_DOMAINS);
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains");
 		initService(restRequest);
+		
+		return (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_DOMAINS);
 	}
 
 
+
 	/**
-	 * Method used to invoke the Openshift service to list all applications within the given domain name
+	 * Method used to invoke the OpenShift service to list all applications within the given domain name
 	 * 
-	 * @param domainName The domain name
+	 * @param domainName the domain name
+	 * @return the cached {@link ApplicationResource} item
 	 * 
 	 * @see ApplicationResource
 	 */
-	public void listApplications(String domainName) {
+	public OpenshiftResponse<OpenshiftDataList<ApplicationResource>> listApplications(String domainName) {
 		Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {}.getType();
 
 		RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> restRequest = new RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>();
@@ -84,6 +92,8 @@ public class OpenshiftServiceHelper {
 		restRequest.setIntentActionName(OpenshiftActions.LIST_APPLICATIONS);
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains/"+domainName+"/applications");
 		initService(restRequest);
+		
+		return (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_APPLICATIONS);
 	}	
 	
 	/**
@@ -107,7 +117,7 @@ public class OpenshiftServiceHelper {
 	}	
 
 	/**
-	 * Method used to invoke the Openshfit service to start a given application within the given domain anme
+	 * Method used to invoke the OpenShift service to start a given application within the given domain name
 	 * 
 	 * @param domainName the name of the domain
 	 * @param application the name of the application
@@ -127,7 +137,7 @@ public class OpenshiftServiceHelper {
 	}
 	
 	/**
-	 * Method used to invoke the Openshfit service to restart a given application within the given domain anme
+	 * Method used to invoke the OpenShift service to restart a given application within the given domain name
 	 * 
 	 * @param domainName the name of the domain
 	 * @param application the name of the application
@@ -147,7 +157,7 @@ public class OpenshiftServiceHelper {
 	}
 	
 	/**
-	 * Method used to invoke the Openshfit service to delete a given application within the given domain anme
+	 * Method used to invoke the OpenShift service to delete a given application within the given domain name
 	 * 
 	 * @param domainName the name of the domain
 	 * @param application the name of the application
@@ -164,13 +174,14 @@ public class OpenshiftServiceHelper {
 	}
 
 	
+
 	/**
-	 * Method used to invoke the Openshfit service to retrieve information for the current user
+	 * Method used to invoke the OpenShift service to retrieve information for the current user
 	 * 
+	 * @return the cached {@link UserResource} item
 	 * @see UserResource
-	 * 
 	 */
-	public void getUserInformation() {
+	public OpenshiftResponse<OpenshiftDataList<UserResource>> getUserInformation() {
 
 		Type type = new TypeToken<OpenshiftResponse<UserResource>>() {}.getType();
 
@@ -181,7 +192,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"user");
 		initService(restRequest);
 
-		
+		return (OpenshiftResponse<OpenshiftDataList<UserResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.USER_DETAIL);
 	}
 	
 	/**

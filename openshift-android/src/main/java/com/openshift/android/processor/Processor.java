@@ -64,7 +64,7 @@ public class Processor {
 			
 			if(RestMethod.GET.equals(request.getMethod())) {
 				// Put in Cache
-				TwoStageCache.put(request.getIntentActionName(), openshiftResponse);	
+				TwoStageCache.getInstance(ctx).put(request.getIntentActionName(), openshiftResponse);	
 			}
 		}
 		

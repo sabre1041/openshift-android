@@ -31,8 +31,6 @@ public class TwoStageCache {
 
 
 	private static TwoStageCache instance = null;
-	@SuppressWarnings("unused")
-	private static Context context;
 	private static int dataStoreOption;
 	
 	private static LRUCache<String,Object> memCache;
@@ -63,7 +61,6 @@ public class TwoStageCache {
 	public static TwoStageCache getInstance(Context context) {
 		if(instance == null) {
 			instance = new TwoStageCache();
-			instance.context = context;
 			memCache = new LRUCache<String, Object>();
 			diskCache = new FileSystemStore(context);
 		}
@@ -83,8 +80,6 @@ public class TwoStageCache {
 	public static TwoStageCache getInstance(Context context, int dataStoreOption) {
 		if(instance == null) {
 			instance = new TwoStageCache();
-			instance.context = context;
-			instance.dataStoreOption = dataStoreOption;
 			memCache = new LRUCache<String,Object>();
 			diskCache = selectDataStore(context,"",dataStoreOption);
 			instance = new TwoStageCache();
@@ -107,8 +102,6 @@ public class TwoStageCache {
 	public static TwoStageCache getInstance(Context context, int dataStoreOption, long age, int size) {
 		if(instance == null) {
 			instance = new TwoStageCache();
-			instance.context = context;
-			instance.dataStoreOption = dataStoreOption;
 			memCache = new LRUCache<String,Object>(age,size);
 			diskCache = selectDataStore(context,"",dataStoreOption);
 		}

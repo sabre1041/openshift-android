@@ -142,8 +142,6 @@ public class LoginActivity extends Activity {
 		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
 		this.registerReceiver(requestReceiver, filter);
 		
-//		mOpenshiftServiceHelper.listDomains();
-
 	}
 
 
