@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.security.AuthorizationManager;
+import com.openshift.android.util.RestRequestHelper;
 
 /**
  * Rest Client for the Application
@@ -82,7 +83,11 @@ public class OpenshiftRestClient {
 	 */
 	public RestResponse get(RestRequest<? extends OpenshiftResource> request) {
 		
-		HttpGet httpRequest = new HttpGet(request.getUrl());
+		request.getInputParameters().put("nolinks", "true");
+		
+		String encodedUrl = RestRequestHelper.getEncodedUrl(request);
+		
+		HttpGet httpRequest = new HttpGet(encodedUrl);
 		httpRequest.setHeader("Accept","application/json; version="+OpenshiftConstants.REST_API_VERSION);
 
 		RestResponse restResponse = new RestResponse();

@@ -24,6 +24,8 @@ public class RestRequest<T extends OpenshiftResource> implements Serializable {
 	private Type type;
 	private RestMethod method;
 	private String url;
+	private String path;
+	private String host;
 	private String message;
 	private int status;
 	private ResultReceiver resultReceiver;
@@ -104,6 +106,22 @@ public class RestRequest<T extends OpenshiftResource> implements Serializable {
 
 	public void setInputParameters(Map<String, String> inputParameters) {
 		this.inputParameters = inputParameters;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.openshift.android.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -26,6 +27,8 @@ public class ApplicationResource implements OpenshiftResource {
 	
 	@SerializedName("building_with")
 	private String buildingWith;
+	
+	private List<CartridgeResource> cartridges;
 	
 	@SerializedName("creation_time")
 	private Date creationTime;
@@ -91,6 +94,14 @@ public class ApplicationResource implements OpenshiftResource {
 	
 	public void setBuildingApplication(String buildingApp) {
 		this.buildingApp = buildingApp;
+	}
+
+	public List<CartridgeResource> getCartridges() {
+		return cartridges;
+	}
+
+	public void setCartridges(List<CartridgeResource> cartridges) {
+		this.cartridges = cartridges;
 	}
 
 	public Date getCreationTime() {
