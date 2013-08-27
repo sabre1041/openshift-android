@@ -43,7 +43,7 @@ public class DomainActivity extends ListActivity {
 
 	private OpenshiftServiceHelper mOpenshiftServiceHelper;
 	
-	public static final String DOMAIN_RESOURCE_EXTRA = "com.redhat.openshift.DOMAIN_MESSAGE";
+	public static final String DOMAIN_RESOURCE_EXTRA = "com.openshift.android.DOMAIN_MESSAGE";
 
 	
 	private ArrayAdapter<DomainResource> domainAdapter;

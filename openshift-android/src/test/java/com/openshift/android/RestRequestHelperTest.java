@@ -8,7 +8,7 @@ import com.openshift.android.util.RestRequestHelper;
 
 public class RestRequestHelperTest extends TestCase  {
 	
-	private static final String BASE_URL = "https://openshift.com/";
+	private static final String BASE_URL = "https:\\openshift.com/";
 	
 	public void setUp() throws Exception {
 		super.setUp();

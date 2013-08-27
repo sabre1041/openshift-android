@@ -1,7 +1,9 @@
 package com.openshift.android.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -26,9 +28,23 @@ public class RestRequestHelper {
 		sb.append(SEPERATOR);
 		sb.append(restRequest.getMethod().name());
 		sb.append(SEPERATOR);
-		sb.append(getEncodedUrl(restRequest));
+		sb.append(getEncodedUrl(restRequest).replaceAll("[/\\\\]", "|"));
 		
 		return sb.toString();
+	}
+	
+	public static String getEncodedUrl(RestRequest<? extends OpenshiftResource> restRequest, Map<String,String> params) {
+		if(restRequest.getUrl() == null || params == null) {
+			throw new IllegalArgumentException("Cannot Produce Encoded URL. Required Parameters Not Set");
+		}
+		
+		List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
+		
+		for(String key : params.keySet()) {
+			queryParams.add(new BasicNameValuePair(key, params.get(key)));
+		}
+				
+		return restRequest.getInputParameters().size() == 0 ? restRequest.getUrl() : restRequest.getUrl()+"?"+URLEncodedUtils.format(queryParams, "utf-8");
 	}
 	
 	public static String getEncodedUrl(RestRequest<? extends OpenshiftResource> restRequest) {
@@ -37,13 +53,8 @@ public class RestRequestHelper {
 			throw new IllegalArgumentException("Cannot Produce Encoded URL. Required Parameters Not Set");
 		}
 		
-		List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
 		
-		for(String key : restRequest.getInputParameters().keySet()) {
-			queryParams.add(new BasicNameValuePair(key, restRequest.getInputParameters().get(key)));
-		}
-				
-		return restRequest.getInputParameters().size() == 0 ? restRequest.getUrl() : restRequest.getUrl()+"?"+URLEncodedUtils.format(queryParams, "utf-8");
+		return getEncodedUrl(restRequest,restRequest.getInputParameters());
 		
 	}
 	

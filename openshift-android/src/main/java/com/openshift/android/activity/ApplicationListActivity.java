@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.openshift.android.R;
@@ -49,6 +50,9 @@ public class ApplicationListActivity extends ListActivity {
 	private ApplicationAdapter applicationAdapter;
 	private List<ApplicationResource> applicationList = new ArrayList<ApplicationResource>();
 	private ProgressDialog progressDialog;
+	
+	public static final String APPLICATION_RESOURCE_EXTRA = "com.openshift.android.APPLICATION_MESSAGE";
+
 
 	/** Called when the activity is first created. */
 	@Override
@@ -139,6 +143,15 @@ public class ApplicationListActivity extends ListActivity {
 			displayList(applicationList);
 		}
 
+	}
+	
+	@Override
+	protected void onListItemClick (ListView l, View v, int position, long id) {
+		
+		ApplicationResource applicationResource = (ApplicationResource) l.getAdapter().getItem(position);
+		Intent intent = new Intent(this, ApplicationViewActivity.class);
+		intent.putExtra(ApplicationListActivity.APPLICATION_RESOURCE_EXTRA, applicationResource);
+		startActivity(intent);
 	}
 	
 	/**

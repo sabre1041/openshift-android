@@ -19,6 +19,7 @@ import com.openshift.android.processor.OpenshiftActions;
 import com.openshift.android.rest.RestMethod;
 import com.openshift.android.rest.RestRequest;
 import com.openshift.android.security.AuthorizationManager;
+import com.openshift.android.util.RestRequestHelper;
 
 /**
  * Helper class to facilitate the invocation of the Openshift Service. Each type of Rest Based request
@@ -70,7 +71,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains");
 		initService(restRequest);
 		
-		return (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_DOMAINS);
+		return (OpenshiftResponse<OpenshiftDataList<DomainResource>>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
 	}
 
 
@@ -93,7 +94,7 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains/"+domainName+"/applications");
 		initService(restRequest);
 		
-		return (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.LIST_APPLICATIONS);
+		return (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
 	}	
 	
 	/**
@@ -192,7 +193,28 @@ public class OpenshiftServiceHelper {
 		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"user");
 		initService(restRequest);
 
-		return (OpenshiftResponse<OpenshiftDataList<UserResource>>) TwoStageCache.getInstance(ctx).get(OpenshiftActions.USER_DETAIL);
+		return (OpenshiftResponse<OpenshiftDataList<UserResource>>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
+	}
+	
+	/**
+	 * Method used to invoke the OpenShift service to retrieve information for the current user
+	 * 
+	 * @return the cached {@link UserResource} item
+	 * @see UserResource
+	 */
+	public OpenshiftResponse<ApplicationResource> getApplicationInformationWithCartridge(ApplicationResource applicationResource) {
+
+		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+
+		RestRequest<OpenshiftResponse<ApplicationResource>> restRequest = new RestRequest<OpenshiftResponse<ApplicationResource>>();
+		restRequest.setMethod(RestMethod.GET);
+		restRequest.setType(type);
+		restRequest.setIntentActionName(OpenshiftActions.APPLICATION_DETAIL_WITH_CARTRIDGE);
+		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains/"+applicationResource.getDomainId()+"/applications/"+applicationResource.getName());
+		restRequest.getInputParameters().put("include", "cartridges");
+		initService(restRequest);
+
+		return (OpenshiftResponse<ApplicationResource>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
 	}
 	
 	/**

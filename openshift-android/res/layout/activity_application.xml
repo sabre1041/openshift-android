@@ -3,6 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Application Name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/appUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Application URL"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/appFramework"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Framework"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

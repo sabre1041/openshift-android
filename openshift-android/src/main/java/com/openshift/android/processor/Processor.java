@@ -13,6 +13,7 @@ import com.openshift.android.rest.RestRequest;
 import com.openshift.android.rest.RestResponse;
 import com.openshift.android.security.AuthorizationManager;
 import com.openshift.android.service.OpenshiftCallback;
+import com.openshift.android.util.RestRequestHelper;
 
 
 /**
@@ -64,7 +65,7 @@ public class Processor {
 			
 			if(RestMethod.GET.equals(request.getMethod())) {
 				// Put in Cache
-				TwoStageCache.getInstance(ctx).put(request.getIntentActionName(), openshiftResponse);	
+				TwoStageCache.getInstance(ctx).put(RestRequestHelper.getCacheKey(request), openshiftResponse);	
 			}
 		}
 		

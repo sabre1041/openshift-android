@@ -1,7 +1,9 @@
 package com.openshift.android.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -83,9 +85,12 @@ public class OpenshiftRestClient {
 	 */
 	public RestResponse get(RestRequest<? extends OpenshiftResource> request) {
 		
-		request.getInputParameters().put("nolinks", "true");
 		
-		String encodedUrl = RestRequestHelper.getEncodedUrl(request);
+		Map<String,String> params = new HashMap<String,String>();
+		params.putAll(request.getInputParameters());
+		params.put("nolinks", "true");
+		
+		String encodedUrl = RestRequestHelper.getEncodedUrl(request,params);
 		
 		HttpGet httpRequest = new HttpGet(encodedUrl);
 		httpRequest.setHeader("Accept","application/json; version="+OpenshiftConstants.REST_API_VERSION);
