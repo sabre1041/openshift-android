@@ -24,6 +24,7 @@ import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftAndroidRequest;
+import com.openshift.android.rest.OpenshiftRestManager;
 
 
 public class ApplicationViewActivity extends Activity {
@@ -67,25 +68,17 @@ public class ApplicationViewActivity extends Activity {
 	    
 	    cartridgeAdapter = new CartridgeAdapter(this, R.layout.cartridge_row_layout, cartridgeList);
 	    cartridgeListView.setAdapter(cartridgeAdapter);
-	    
-	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
-	    
-		OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>> applicationWithCartridgeRequest = new OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>>(Method.GET,
-	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+applicationResource.getDomainId()+"/applications/"+applicationResource.getName()+"?include=cartridges&nolinks=true", type, null,null,
-	    		new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
+	    	    
+		OpenshiftRestManager.getInstance().getApplicationWithCartridge(applicationResource.getDomainId(), applicationResource.getName(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
 
 					@Override
 					public void onResponse(
 							OpenshiftResponse<ApplicationResource> response) {
 						updateList(response.getData().getCartridges());
-						
-						Type cartridgeType = new TypeToken<OpenshiftResponse<CartridgeResource>>() {}.getType();
-						
+												
 						for(CartridgeResource cartridge : response.getData().getCartridges()) {
 
-							OpenshiftAndroidRequest<OpenshiftResponse<CartridgeResource>> cartridgeRequest = new OpenshiftAndroidRequest<OpenshiftResponse<CartridgeResource>>(Method.GET,
-						    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+applicationResource.getDomainId()+"/applications/"+applicationResource.getName()+"/cartridges/"+cartridge.getName()+"?include=status_messages&nolinks=true", cartridgeType, null,null,
-						    		new Response.Listener<OpenshiftResponse<CartridgeResource>>() {
+							OpenshiftRestManager.getInstance().getCartridge(applicationResource.getDomainId(), applicationResource.getName(), cartridge.getName(), new Response.Listener<OpenshiftResponse<CartridgeResource>>() {
 
 										@Override
 										public void onResponse(
@@ -100,7 +93,6 @@ public class ApplicationViewActivity extends Activity {
 											showToast("Cannot get Application List: "+error.getMessage());
 										}
 									});	
-							OpenshiftAndroidApplication.getInstance().getRequestQueue().add(cartridgeRequest);
 						}
 
 						
@@ -113,7 +105,7 @@ public class ApplicationViewActivity extends Activity {
 					}
 				});
 	    
-	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationWithCartridgeRequest);
+//	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationWithCartridgeRequest);
 
 	    
 	

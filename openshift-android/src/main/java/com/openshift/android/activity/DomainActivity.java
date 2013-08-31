@@ -1,6 +1,5 @@
 package com.openshift.android.activity;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +17,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
-import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.R;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
-import com.openshift.android.rest.OpenshiftAndroidRequest;
+import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.security.AuthorizationManager;
 
 
@@ -59,12 +55,8 @@ public class DomainActivity extends ListActivity {
 	    	    
 	    domainAdapter = new ArrayAdapter<DomainResource>(this, R.layout.simple_textview_layout, android.R.id.text1, domainList);
 	    setListAdapter(domainAdapter);
-	
-	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {}.getType();
 	    
-	    OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>> domainRequest = new OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>>(Method.GET,
-	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains?nolinks=true", type, null,null,
-	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {
+	    OpenshiftRestManager.getInstance().listDomains(new Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {
 
 					@Override
 					public void onResponse(
@@ -80,9 +72,7 @@ public class DomainActivity extends ListActivity {
 					}
 				});
 	    
-	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(domainRequest);
-		
-
+	    
 	}
 	
 	/**

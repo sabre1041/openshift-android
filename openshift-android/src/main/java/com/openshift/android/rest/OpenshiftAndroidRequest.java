@@ -60,9 +60,7 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
     	Map<String, String> params = parameters != null ? parameters : new HashMap<String,String>();
     	
     	// Add nolinks Query Parameter to suppress output size/length
-//    	if(Method.GET == method) {
     		params.put("nolinks", "true");
-//    	}
     	
         return params;
     }

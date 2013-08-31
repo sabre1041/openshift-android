@@ -1,14 +1,9 @@
 package com.openshift.android.activity;
 
-import java.lang.reflect.Type;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,20 +11,12 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
-import com.google.gson.reflect.TypeToken;
 import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.R;
-import com.openshift.android.cache.TwoStageCache;
-import com.openshift.android.model.DomainResource;
-import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.model.UserResource;
-import com.openshift.android.processor.OpenshiftActions;
-import com.openshift.android.rest.OpenshiftAndroidRequest;
-import com.openshift.android.rest.RestRequest;
+import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.security.AuthorizationManager;
-import com.openshift.android.service.OpenshiftServiceHelper;
 
 /**
  * Primary entry point to the application. Allows the user to use their OpenShift 
@@ -61,7 +48,7 @@ public class LoginActivity extends Activity {
 	    super.onCreate(savedInstanceState);
 	    
 	    // Initialize Cache
-	    TwoStageCache.getInstance(this);
+//	    TwoStageCache.getInstance(this);
 	    
 	    
 	    if(OpenshiftAndroidApplication.getInstance().getAuthorizationManger().checkAuthentication()) {
@@ -101,13 +88,8 @@ public class LoginActivity extends Activity {
 		progressDialog.setTitle("Validating");
 		progressDialog.setMessage("Validating with Openshift");
 		progressDialog.show();
-		
-	    Type type = new TypeToken<OpenshiftResponse<UserResource>>() {}.getType();
 
-
-		OpenshiftAndroidRequest<OpenshiftResponse<UserResource>> userRequest = new OpenshiftAndroidRequest<OpenshiftResponse<UserResource>>(Method.GET,
-	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"user?nolinks=true", type, null,null,
-	    		new Response.Listener<OpenshiftResponse<UserResource>>() {
+	    OpenshiftRestManager.getInstance().getUser(new Response.Listener<OpenshiftResponse<UserResource>>() {
 
 					@Override
 					public void onResponse(
@@ -128,8 +110,6 @@ public class LoginActivity extends Activity {
 						openshiftPassword.setText("");
 					}
 				});
-	    
-	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(userRequest);
 
     	
     }

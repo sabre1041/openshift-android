@@ -36,6 +36,7 @@ import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftAndroidRequest;
+import com.openshift.android.rest.OpenshiftRestManager;
 
 /**
  * Displays a list of Applications within an OpenShift Domain
@@ -71,10 +72,7 @@ public class ApplicationListActivity extends ListActivity {
 	    
 	    registerForContextMenu(getListView());
 	    
-	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {}.getType();
-	    
-		OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> applicationListRequest = new OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>(Method.GET,
-	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+domainResource.getName()+"/applications?nolinks=true", type, null,null,
+		OpenshiftRestManager.getInstance().listApplications(domainResource.getName(),
 	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {
 
 					@Override
@@ -91,10 +89,6 @@ public class ApplicationListActivity extends ListActivity {
 						showToast("Cannot get Application List: "+error.getMessage());
 					}
 				});
-	    
-	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationListRequest);
-
-
 
 	}
 	
