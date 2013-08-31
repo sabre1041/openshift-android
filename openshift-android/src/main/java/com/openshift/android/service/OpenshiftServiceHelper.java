@@ -10,6 +10,7 @@ import android.os.ResultReceiver;
 import com.google.gson.reflect.TypeToken;
 import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.ApplicationResource;
+import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResource;
@@ -197,7 +198,7 @@ public class OpenshiftServiceHelper {
 	}
 	
 	/**
-	 * Method used to invoke the OpenShift service to retrieve information for the current user
+	 * Method used to invoke the OpenShift service to retrieve an individual application w/ cartridge information
 	 * 
 	 * @return the cached {@link UserResource} item
 	 * @see UserResource
@@ -215,6 +216,27 @@ public class OpenshiftServiceHelper {
 		initService(restRequest);
 
 		return (OpenshiftResponse<ApplicationResource>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
+	}
+	
+	/**
+	 * Method used to invoke the OpenShift service to retrieve cartridge information with current status
+	 * 
+	 * @return the cached {@link UserResource} item
+	 * @see UserResource
+	 */
+	public OpenshiftResponse<CartridgeResource> getCartridgeWithStatus(ApplicationResource applicationResource, String cartridgeName) {
+
+		Type type = new TypeToken<OpenshiftResponse<CartridgeResource>>() {}.getType();
+
+		RestRequest<OpenshiftResponse<ApplicationResource>> restRequest = new RestRequest<OpenshiftResponse<ApplicationResource>>();
+		restRequest.setMethod(RestMethod.GET);
+		restRequest.setType(type);
+		restRequest.setIntentActionName(OpenshiftActions.CARTRIDGE_WITH_STATUS);
+		restRequest.setUrl(AuthorizationManager.getInstance(ctx).getOpenshiftUrl()+"domains/"+applicationResource.getDomainId()+"/applications/"+applicationResource.getName()+"/cartridges/"+cartridgeName);
+		restRequest.getInputParameters().put("include", "status_messages");
+		initService(restRequest);
+
+		return (OpenshiftResponse<CartridgeResource>) TwoStageCache.getInstance(ctx).get(RestRequestHelper.getCacheKey(restRequest));
 	}
 	
 	/**

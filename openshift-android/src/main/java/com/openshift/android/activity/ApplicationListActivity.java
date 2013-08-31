@@ -1,16 +1,16 @@
 package com.openshift.android.activity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,16 +23,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
+import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
-import com.openshift.android.model.OpenshiftResource;
 import com.openshift.android.model.OpenshiftResponse;
-import com.openshift.android.processor.OpenshiftActions;
-import com.openshift.android.rest.RestRequest;
-import com.openshift.android.service.OpenshiftServiceHelper;
+import com.openshift.android.rest.OpenshiftAndroidRequest;
 
 /**
  * Displays a list of Applications within an OpenShift Domain
@@ -41,9 +44,9 @@ import com.openshift.android.service.OpenshiftServiceHelper;
  */
 public class ApplicationListActivity extends ListActivity {
 	
-	private BroadcastReceiver requestReceiver;
+//	private BroadcastReceiver requestReceiver;
 
-	private OpenshiftServiceHelper mOpenshiftServiceHelper;
+//	private OpenshiftServiceHelper mOpenshiftServiceHelper;
 	
 	private DomainResource domainResource;
 	
@@ -67,15 +70,39 @@ public class ApplicationListActivity extends ListActivity {
 	    setListAdapter(applicationAdapter);
 	    
 	    registerForContextMenu(getListView());
+	    
+	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {}.getType();
+	    
+		OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> applicationListRequest = new OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>(Method.GET,
+	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+domainResource.getName()+"/applications?nolinks=true", type, null,null,
+	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {
+
+					@Override
+					public void onResponse(
+							OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
+						displayList(response);	
+
+						
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						showToast("Cannot get Application List: "+error.getMessage());
+					}
+				});
+	    
+	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationListRequest);
+
 
 
 	}
 	
 	@Override
 	public void onPause() {
-		if(requestReceiver != null) {
-			this.unregisterReceiver(requestReceiver);
-		}
+//		if(requestReceiver != null) {
+//			this.unregisterReceiver(requestReceiver);
+//		}
 		
 		super.onPause();
 	}
@@ -85,63 +112,63 @@ public class ApplicationListActivity extends ListActivity {
 		
 		super.onResume();
 		registerForContextMenu(getListView());
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(OpenshiftActions.LIST_APPLICATIONS);
-		filter.addAction(OpenshiftActions.STOP_APPLICATION);
-		filter.addAction(OpenshiftActions.START_APPLICATION);
-		filter.addAction(OpenshiftActions.RESTART_APPLICATION);
-		filter.addAction(OpenshiftActions.DELETE_APPLICATION);
-		
-		requestReceiver = new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				 
-				if(OpenshiftActions.LIST_APPLICATIONS.equals(intent.getAction()))
-				{
-				
-					RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> applicationRequest = (RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
-					OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) applicationRequest.getResponse();
-					
-					if(applicationRequest.getStatus()==200){	
-						displayList(response);	
-	
-					}
-					else {
-						showToast("Failed to Retrieve Application Information: "+applicationRequest.getMessage());
-					}
-				}
-				else {
-					RestRequest<OpenshiftResponse<ApplicationResource>> applicationRequest = (RestRequest<OpenshiftResponse<ApplicationResource>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
-
-					if(OpenshiftActions.STOP_APPLICATION.equals(intent.getAction())){
-					  applicationActionResponse(applicationRequest, "Application Successfully Stopped", "Stopped");
-					}
-					else if (OpenshiftActions.START_APPLICATION.equals(intent.getAction())){
-						  applicationActionResponse(applicationRequest, "Application Successfully Started", "Started");
-					}
-					else if (OpenshiftActions.RESTART_APPLICATION.equals(intent.getAction())){
-						  applicationActionResponse(applicationRequest, "Application Restarted", "Restarted");
-					}					
-					else if (OpenshiftActions.DELETE_APPLICATION.equals(intent.getAction())){
-						  applicationActionResponse(applicationRequest, "Application Deleted", "Deleted");
-					}
-					
-				
-				}
-			}
-			
-		};
-		
-		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
-		this.registerReceiver(requestReceiver, filter);
-		
-		
-		OpenshiftResponse<OpenshiftDataList<ApplicationResource>> applicationList = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) mOpenshiftServiceHelper.listApplications(domainResource.getName());
-		
-		if(applicationList != null) {
-			displayList(applicationList);
-		}
+//		IntentFilter filter = new IntentFilter();
+//		filter.addAction(OpenshiftActions.LIST_APPLICATIONS);
+//		filter.addAction(OpenshiftActions.STOP_APPLICATION);
+//		filter.addAction(OpenshiftActions.START_APPLICATION);
+//		filter.addAction(OpenshiftActions.RESTART_APPLICATION);
+//		filter.addAction(OpenshiftActions.DELETE_APPLICATION);
+//		
+//		requestReceiver = new BroadcastReceiver() {
+//
+//			@Override
+//			public void onReceive(Context context, Intent intent) {
+//				 
+//				if(OpenshiftActions.LIST_APPLICATIONS.equals(intent.getAction()))
+//				{
+//				
+//					RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> applicationRequest = (RestRequest<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
+//					OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) applicationRequest.getResponse();
+//					
+//					if(applicationRequest.getStatus()==200){	
+//						displayList(response);	
+//	
+//					}
+//					else {
+//						showToast("Failed to Retrieve Application Information: "+applicationRequest.getMessage());
+//					}
+//				}
+//				else {
+//					RestRequest<OpenshiftResponse<ApplicationResource>> applicationRequest = (RestRequest<OpenshiftResponse<ApplicationResource>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
+//
+//					if(OpenshiftActions.STOP_APPLICATION.equals(intent.getAction())){
+//					  applicationActionResponse(applicationRequest, "Application Successfully Stopped", "Stopped");
+//					}
+//					else if (OpenshiftActions.START_APPLICATION.equals(intent.getAction())){
+//						  applicationActionResponse(applicationRequest, "Application Successfully Started", "Started");
+//					}
+//					else if (OpenshiftActions.RESTART_APPLICATION.equals(intent.getAction())){
+//						  applicationActionResponse(applicationRequest, "Application Restarted", "Restarted");
+//					}					
+//					else if (OpenshiftActions.DELETE_APPLICATION.equals(intent.getAction())){
+//						  applicationActionResponse(applicationRequest, "Application Deleted", "Deleted");
+//					}
+//					
+//				
+//				}
+//			}
+//			
+//		};
+//		
+//		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
+//		this.registerReceiver(requestReceiver, filter);
+//		
+//		
+//		OpenshiftResponse<OpenshiftDataList<ApplicationResource>> applicationList = (OpenshiftResponse<OpenshiftDataList<ApplicationResource>>) mOpenshiftServiceHelper.listApplications(domainResource.getName());
+//		
+//		if(applicationList != null) {
+//			displayList(applicationList);
+//		}
 
 	}
 	
@@ -207,16 +234,21 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setTitle(appResource.getName());
 				progressDialog.setMessage("Stopping Application");
 				progressDialog.show();
+
+				executeApplicationEvent(appResource.getName(), "stop", "Stopped");				
 				
-				mOpenshiftServiceHelper.stopApplication(appResource.getDomainId(), appResource.getName());
+//				mOpenshiftServiceHelper.stopApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Start Application")) {
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 				progressDialog.setTitle(appResource.getName());
 				progressDialog.setMessage("Starting Application");
 				progressDialog.show();
+
+				executeApplicationEvent(appResource.getName(), "start", "Started");
 				
-				mOpenshiftServiceHelper.startApplication(appResource.getDomainId(), appResource.getName());
+				
+//				mOpenshiftServiceHelper.startApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Restart Application")) {
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
@@ -224,7 +256,9 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Restarting Application");
 				progressDialog.show();
 				
-				mOpenshiftServiceHelper.restartApplication(appResource.getDomainId(), appResource.getName());
+				executeApplicationEvent(appResource.getName(), "restart", "Restarted");
+				
+//				mOpenshiftServiceHelper.restartApplication(appResource.getDomainId(), appResource.getName());
 			}
 			else if(item.getTitle().equals("Delete Application")) {
 				
@@ -243,8 +277,10 @@ public class ApplicationListActivity extends ListActivity {
 						progressDialog.setTitle(appResource.getName());
 						progressDialog.setMessage("Deleting Application");
 						progressDialog.show();
+
+						//TODO: Delete Application
 						
-						mOpenshiftServiceHelper.deleteApplication(appResource.getDomainId(), appResource.getName());
+//						mOpenshiftServiceHelper.deleteApplication(appResource.getDomainId(), appResource.getName());
 						
 					}
 				});
@@ -269,9 +305,9 @@ public class ApplicationListActivity extends ListActivity {
 	 * @param successMessage the message to display
 	 * @param action the action which was performed
 	 */
-	private void applicationActionResponse(RestRequest<? extends OpenshiftResource> restRequest,  String successMessage, String action) {
+	private void applicationActionResponse(boolean success, String successMessage, String action) {
 			
-			if(restRequest.getStatus()==200){	
+			if(success){	
 				if(progressDialog != null && progressDialog.isShowing()) {
 					progressDialog.dismiss();
 				}
@@ -305,6 +341,39 @@ public class ApplicationListActivity extends ListActivity {
 		
 		applicationAdapter.setNotifyOnChange(true);					
 		applicationAdapter.notifyDataSetChanged();
+	}
+	
+	private void executeApplicationEvent(String applicationName, String paramName, final String responseMessage) {
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("event", paramName);
+		
+		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+		OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>> applicationEventRequest = new OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>>(Method.POST,
+	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+domainResource.getName()+"/applications/"+applicationName+"/events", type, null,params,
+	    		new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
+
+					@Override
+					public void onResponse(
+							OpenshiftResponse<ApplicationResource> response) {
+						applicationActionResponse(true, "Application Successfully "+responseMessage, responseMessage);
+
+						
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						applicationActionResponse(false, null, responseMessage);
+					}
+				});
+		
+		applicationEventRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000, 
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, 
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+	    
+	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationEventRequest);
+
 	}
 	
 	

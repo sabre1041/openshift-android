@@ -17,6 +17,7 @@ public class OpenshiftActions {
 	public static final String LIST_DOMAINS = "com.openshift.android.LIST_DOMAINS";
 	public static final String USER_DETAIL = "com.openshift.android.USER_DETAIL";
 	public static final String LIST_APPLICATIONS = "com.openshift.android.LIST_APPLICATIONS";
+	public static final String CARTRIDGE_WITH_STATUS = "com.openshift.android.CARTRIDGE_WITH_STATUS";
 	public static final String APPLICATION_DETAIL_WITH_CARTRIDGE = "com.openshift.android.APPLICATION_DETAIL_WITH_CARTRIDGE";
 	public static final String STOP_APPLICATION = "com.openshift.android.STOP_APPLICATION";
 	public static final String START_APPLICATION = "com.openshift.android.START_APPLICATION";

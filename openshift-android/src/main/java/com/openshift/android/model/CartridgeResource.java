@@ -46,6 +46,8 @@ public class CartridgeResource implements OpenshiftResource {
 	private String scalesWith;
 	
 	// Status Message
+	@SerializedName("status_messages")
+	private List<StatusMessage> statusMessages;
 	
 	@SerializedName("supported_scales_from")
 	private String supportedScalesFrom;
@@ -175,6 +177,14 @@ public class CartridgeResource implements OpenshiftResource {
 
 	public void setScalesWith(String scalesWith) {
 		this.scalesWith = scalesWith;
+	}
+
+	public List<StatusMessage> getStatusMessages() {
+		return statusMessages;
+	}
+
+	public void setStatusMessages(List<StatusMessage> statusMessages) {
+		this.statusMessages = statusMessages;
 	}
 
 	public String getSupportedScalesFrom() {

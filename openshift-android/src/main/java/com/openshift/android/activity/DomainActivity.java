@@ -1,12 +1,11 @@
 package com.openshift.android.activity;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.ListActivity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -19,15 +18,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
+import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.R;
-import com.openshift.android.cache.TwoStageCache;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
-import com.openshift.android.processor.OpenshiftActions;
-import com.openshift.android.rest.RestRequest;
+import com.openshift.android.rest.OpenshiftAndroidRequest;
 import com.openshift.android.security.AuthorizationManager;
-import com.openshift.android.service.OpenshiftServiceHelper;
 
 
 /** Displays a list of Domains owned by the currently logged in User
@@ -39,9 +40,9 @@ import com.openshift.android.service.OpenshiftServiceHelper;
  */
 public class DomainActivity extends ListActivity {
 	
-	private BroadcastReceiver requestReceiver;
-
-	private OpenshiftServiceHelper mOpenshiftServiceHelper;
+//	private BroadcastReceiver requestReceiver;
+//
+//	private OpenshiftServiceHelper mOpenshiftServiceHelper;
 	
 	public static final String DOMAIN_RESOURCE_EXTRA = "com.openshift.android.DOMAIN_MESSAGE";
 
@@ -58,7 +59,28 @@ public class DomainActivity extends ListActivity {
 	    	    
 	    domainAdapter = new ArrayAdapter<DomainResource>(this, R.layout.simple_textview_layout, android.R.id.text1, domainList);
 	    setListAdapter(domainAdapter);
+	
+	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {}.getType();
 	    
+	    OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>> domainRequest = new OpenshiftAndroidRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>>(Method.GET,
+	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains?nolinks=true", type, null,null,
+	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {
+
+					@Override
+					public void onResponse(
+							OpenshiftResponse<OpenshiftDataList<DomainResource>> response) {
+						displayList(response);
+						
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						showToast("Failed to Display Domains: "+error.getMessage());
+					}
+				});
+	    
+	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(domainRequest);
 		
 
 	}
@@ -121,10 +143,10 @@ public class DomainActivity extends ListActivity {
 	
 	@Override
 	public void onPause() {
-		if(requestReceiver != null) {
-			this.unregisterReceiver(requestReceiver);
-		}
-		
+//		if(requestReceiver != null) {
+//			this.unregisterReceiver(requestReceiver);
+//		}
+//		
 		super.onPause();
 	}
 	
@@ -136,37 +158,37 @@ public class DomainActivity extends ListActivity {
 		
 		super.onResume();
 				
-		IntentFilter filter = new IntentFilter(OpenshiftActions.LIST_DOMAINS);
-		requestReceiver = new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				 
-				RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>> domainRequest = (RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
-				Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains Response Code: "+domainRequest.getStatus());
-				OpenshiftResponse<OpenshiftDataList<DomainResource>> response = (OpenshiftResponse<OpenshiftDataList<DomainResource>>) domainRequest.getResponse();
-				
-				if(domainRequest.getStatus()==200){	
-					
-					displayList(response);
-				}
-				else {
-					showToast("Failed to Retrieve Domain Information: "+domainRequest.getMessage());
-				}
-				
-				
-			}
-			
-		};
-		
-		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
-		this.registerReceiver(requestReceiver, filter);
-		
-		OpenshiftResponse<OpenshiftDataList<DomainResource>> cachedDomainList = mOpenshiftServiceHelper.listDomains();
-
-		if(cachedDomainList != null) {
-			displayList(cachedDomainList);
-		}
+//		IntentFilter filter = new IntentFilter(OpenshiftActions.LIST_DOMAINS);
+//		requestReceiver = new BroadcastReceiver() {
+//
+//			@Override
+//			public void onReceive(Context context, Intent intent) {
+//				 
+//				RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>> domainRequest = (RestRequest<OpenshiftResponse<OpenshiftDataList<DomainResource>>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
+//				Log.v(DomainActivity.class.getPackage().getName(),"Retrieved Domains Response Code: "+domainRequest.getStatus());
+//				OpenshiftResponse<OpenshiftDataList<DomainResource>> response = (OpenshiftResponse<OpenshiftDataList<DomainResource>>) domainRequest.getResponse();
+//				
+//				if(domainRequest.getStatus()==200){	
+//					
+//					displayList(response);
+//				}
+//				else {
+//					showToast("Failed to Retrieve Domain Information: "+domainRequest.getMessage());
+//				}
+//				
+//				
+//			}
+//			
+//		};
+//		
+//		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
+//		this.registerReceiver(requestReceiver, filter);
+//		
+//		OpenshiftResponse<OpenshiftDataList<DomainResource>> cachedDomainList = mOpenshiftServiceHelper.listDomains();
+//
+//		if(cachedDomainList != null) {
+//			displayList(cachedDomainList);
+//		}
 		
 	}
 	
