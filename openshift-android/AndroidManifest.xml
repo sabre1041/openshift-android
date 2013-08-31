@@ -5,9 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/openshift_logo" android:label="@string/app_name" android:theme="@style/AppTheme" android:name="OpenshiftAndroidApplication">
-        <activity android:name="OpenshiftActivity"> 
-        </activity>
-        <service android:name="com.openshift.android.service.OpenshiftService"/>
         <activity android:label="Domains" android:name="com.openshift.android.activity.DomainActivity"/>
         <activity android:label="Applications" android:name="com.openshift.android.activity.ApplicationListActivity"/>
         <activity android:name="com.openshift.android.activity.ApplicationViewActivity"/>

@@ -32,11 +32,7 @@ public class LoginActivity extends Activity {
 	private EditText openshiftAccount;
 	
 	private EditText openshiftPassword;
-	
-//	private BroadcastReceiver requestReceiver;
-//
-//	private OpenshiftServiceHelper mOpenshiftServiceHelper;
-	
+		
 	private static final String OPENSHIFT_DEFAULT_URL = "https://openshift.redhat.com/broker/rest/";
 	
 	
@@ -46,10 +42,7 @@ public class LoginActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    
-	    // Initialize Cache
-//	    TwoStageCache.getInstance(this);
-	    
+	    	    
 	    
 	    if(OpenshiftAndroidApplication.getInstance().getAuthorizationManger().checkAuthentication()) {
 			Intent intent = new Intent(this, DomainActivity.class);
@@ -115,9 +108,6 @@ public class LoginActivity extends Activity {
     }
 
 	public void onPause() {
-//		if(requestReceiver != null) {
-//			this.unregisterReceiver(requestReceiver);
-//		}
 		
 		super.onPause();
 	}
@@ -126,36 +116,7 @@ public class LoginActivity extends Activity {
 	public void onResume() {
 		
 		super.onResume();
-		
-//		IntentFilter filter = new IntentFilter(OpenshiftActions.USER_DETAIL);
-//		requestReceiver = new BroadcastReceiver() {
-//
-//			@Override
-//			public void onReceive(Context context, Intent intent) {
-//				 
-//				RestRequest<OpenshiftResponse<UserResource>> userRequest = (RestRequest<OpenshiftResponse<UserResource>>) intent.getSerializableExtra(OpenshiftServiceHelper.EXTRA_RESULT_DATA);
-//				progressDialog.dismiss();
-//				if(userRequest.getStatus()==200){	
-//				
-//					Intent homeIntent = new Intent(getApplicationContext(), DomainActivity.class);
-//					startActivity(homeIntent);
-//					finish();
-//
-//				}
-//				else {
-//					authenticationManager.invalidateAuthentication();
-//					new AlertDialog.Builder(LoginActivity.this).setTitle("Failure").setMessage("Could not validate credentials").setNeutralButton("Close", null).show();
-//					openshiftPassword.setText("");
-//				}
-//				
-//				
-//			}
-//			
-//		};
-//		
-//		mOpenshiftServiceHelper = OpenshiftServiceHelper.getInstance(this);
-//		this.registerReceiver(requestReceiver, filter);
-		
+				
 	}
 
 
