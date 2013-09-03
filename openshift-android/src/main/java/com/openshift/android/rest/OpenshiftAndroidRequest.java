@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.UnknownFormatConversionException;
 
 import android.util.Base64;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;

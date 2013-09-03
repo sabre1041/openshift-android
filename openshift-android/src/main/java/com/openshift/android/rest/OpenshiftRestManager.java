@@ -14,6 +14,7 @@ import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.DomainResource;
+import com.openshift.android.model.EventType;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.model.UserResource;
@@ -131,6 +132,36 @@ public class OpenshiftRestManager {
 		
 	}
 	
+	public void applicationEvent(String domainName, String applicationName, EventType eventType, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(domainName);
+		builder.appendPath("applications");
+		builder.appendPath(applicationName);
+		
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("event", eventType.name().toLowerCase());
+		
+	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+		
+		if(eventType!=null) {
+			
+			switch(eventType) {
+			case START:
+			case STOP:
+			case RESTART:
+				builder.appendPath("events");
+				processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+				break;
+			case DELETE:
+				processRequest(Method.DELETE, builder.build().toString(), type, null, params, listener, errorListener);
+				break;
+			}
+			
+		}
+	}
+	
 
 	
 	public <T> void processRequest(int method, String url, Type type, Map<String,String> headers, Map<String,String> params, Response.Listener<T> listener, Response.ErrorListener errorListener) {
@@ -139,7 +170,7 @@ public class OpenshiftRestManager {
 		
 		//TODO: Need to determine how to handle timeout and retry policies
 		request.setRetryPolicy(new DefaultRetryPolicy(
-                50000, 
+                120000, 
                 0, 
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 

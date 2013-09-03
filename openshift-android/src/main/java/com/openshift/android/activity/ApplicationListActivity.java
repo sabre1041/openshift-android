@@ -34,6 +34,7 @@ import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.DomainResource;
+import com.openshift.android.model.EventType;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftAndroidRequest;
@@ -179,7 +180,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Stopping Application");
 				progressDialog.show();
 
-				executeApplicationEvent(appResource.getName(), "stop", "Stopped");				
+				executeApplicationEvent(appResource.getName(), EventType.STOP, "Stopped");				
 				
 			}
 			else if(item.getTitle().equals("Start Application")) {
@@ -188,7 +189,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Starting Application");
 				progressDialog.show();
 
-				executeApplicationEvent(appResource.getName(), "start", "Started");
+				executeApplicationEvent(appResource.getName(), EventType.START, "Started");
 				
 				
 			}
@@ -198,7 +199,7 @@ public class ApplicationListActivity extends ListActivity {
 				progressDialog.setMessage("Restarting Application");
 				progressDialog.show();
 				
-				executeApplicationEvent(appResource.getName(), "restart", "Restarted");
+				executeApplicationEvent(appResource.getName(), EventType.RESTART, "Restarted");
 				
 			}
 			else if(item.getTitle().equals("Delete Application")) {
@@ -221,7 +222,7 @@ public class ApplicationListActivity extends ListActivity {
 
 						//TODO: Delete Application
 						
-						
+						executeApplicationEvent(appResource.getName(), EventType.DELETE, "Deleted");
 					}
 				});
 				
@@ -283,20 +284,18 @@ public class ApplicationListActivity extends ListActivity {
 		applicationAdapter.notifyDataSetChanged();
 	}
 	
-	private void executeApplicationEvent(String applicationName, String paramName, final String responseMessage) {
-		Map<String,String> params = new HashMap<String,String>();
-		params.put("event", paramName);
+	private void executeApplicationEvent(String applicationName, EventType eventType, final String responseMessage) {
 		
-		Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
-		OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>> applicationEventRequest = new OpenshiftAndroidRequest<OpenshiftResponse<ApplicationResource>>(Method.POST,
-	    		OpenshiftAndroidApplication.getInstance().getAuthorizationManger().getOpenshiftUrl()+"domains/"+domainResource.getName()+"/applications/"+applicationName+"/events", type, null,params,
-	    		new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
+		OpenshiftRestManager.getInstance().applicationEvent(domainResource.getName(), applicationName, eventType,
+				new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
 
 					@Override
 					public void onResponse(
 							OpenshiftResponse<ApplicationResource> response) {
 						applicationActionResponse(true, "Application Successfully "+responseMessage, responseMessage);
-
+						
+						// Get a fresh set of data
+						makeApplicationListRequest();
 						
 					}
 				}, new Response.ErrorListener() {
@@ -306,13 +305,6 @@ public class ApplicationListActivity extends ListActivity {
 						applicationActionResponse(false, null, responseMessage);
 					}
 				});
-		
-		applicationEventRequest.setRetryPolicy(new DefaultRetryPolicy(
-                50000, 
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, 
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-	    
-	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationEventRequest);
 
 	}
 	
