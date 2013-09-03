@@ -14,6 +14,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter> 
         </activity>
+        <activity android:name=".activity.ApplicationNewActivity" android:label="Create Application" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

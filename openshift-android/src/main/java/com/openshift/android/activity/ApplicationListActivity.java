@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,30 +70,15 @@ public class ApplicationListActivity extends ListActivity {
 	    
 	    registerForContextMenu(getListView());
 	    
-		OpenshiftRestManager.getInstance().listApplications(domainResource.getName(),
-	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {
-
-					@Override
-					public void onResponse(
-							OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
-						displayList(response);	
-
-						
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						showToast("Cannot get Application List: "+error.getMessage());
-					}
-				});
-
+	    makeApplicationListRequest();
 	}
 	
 	@Override
 	public void onPause() {
 	
 		super.onPause();
+		
+
 	}
 	
 	@Override
@@ -100,8 +86,10 @@ public class ApplicationListActivity extends ListActivity {
 		
 		super.onResume();
 		registerForContextMenu(getListView());
+		makeApplicationListRequest();
 
 	}
+	
 	
 	@Override
 	protected void onListItemClick (ListView l, View v, int position, long id) {
@@ -111,6 +99,31 @@ public class ApplicationListActivity extends ListActivity {
 		intent.putExtra(ApplicationListActivity.APPLICATION_RESOURCE_EXTRA, applicationResource);
 		startActivity(intent);
 	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add("Create Application");
+		return true;
+	}
+	
+	/**
+	 * Performs the action from a menu selection
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		if(item.getTitle().equals("Create Application")) {
+			Intent intent = new Intent(this, ApplicationNewActivity.class);
+			intent.putExtra(DomainActivity.DOMAIN_RESOURCE_EXTRA, domainResource);
+			startActivity(intent);
+			return true;
+		}
+		
+		return super.onOptionsItemSelected(item);
+		
+	}
+	
 	
 	/**
 	 * Shows a short toast display
@@ -300,6 +313,27 @@ public class ApplicationListActivity extends ListActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 	    
 	    OpenshiftAndroidApplication.getInstance().getRequestQueue().add(applicationEventRequest);
+
+	}
+	
+	private void makeApplicationListRequest() {
+		OpenshiftRestManager.getInstance().listApplications(domainResource.getName(),
+	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {
+
+					@Override
+					public void onResponse(
+							OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
+						displayList(response);	
+
+						
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						showToast("Cannot get Application List: "+error.getMessage());
+					}
+				});
 
 	}
 	

@@ -111,6 +111,12 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
 			return Response.error(new ParseError(e));
 		}
 	}
+	
+	@Override
+    public String getBodyContentType() {
+        return "application/x-www-form-urlencoded";
+    }
+
 
 	private T getJson(String json) throws UnknownFormatConversionException {
 		if (type != null) {

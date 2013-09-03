@@ -1,12 +1,14 @@
 package com.openshift.android.rest;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 import android.net.Uri;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
+import com.android.volley.Response;
 import com.google.gson.reflect.TypeToken;
 import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.model.ApplicationResource;
@@ -53,7 +55,7 @@ public class OpenshiftRestManager {
 		
 	}
 	
-	public void listApplications(String domainName, com.android.volley.Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void listApplications(String domainName, com.android.volley.Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -82,7 +84,7 @@ public class OpenshiftRestManager {
 		
 	}
 	
-	public void getCartridge(String domainName, String applicationName, String cartridgeName, com.android.volley.Response.Listener<OpenshiftResponse<CartridgeResource>> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void getCartridge(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<CartridgeResource>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -101,14 +103,44 @@ public class OpenshiftRestManager {
 	}	
 	
 
+	public void getAvailableCartridges(Response.Listener<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("cartridges");
+				
+	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>>() {}.getType();
+
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		
+	}
 	
-	public <T> void processRequest(int method, String url, Type type, Map<String,String> headers, Map<String,String> params, com.android.volley.Response.Listener<T> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void createApplication(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
+
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(domainName);
+		builder.appendPath("applications");
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("name", applicationName);
+		params.put("cartridge", cartridgeName);
+		
+	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+		
+		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+		
+	}
+	
+
+	
+	public <T> void processRequest(int method, String url, Type type, Map<String,String> headers, Map<String,String> params, Response.Listener<T> listener, Response.ErrorListener errorListener) {
 		
 		OpenshiftAndroidRequest<T> request = new OpenshiftAndroidRequest<T>(method, url, type, headers, params, listener, errorListener);
 		
+		//TODO: Need to determine how to handle timeout and retry policies
 		request.setRetryPolicy(new DefaultRetryPolicy(
                 50000, 
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, 
+                0, 
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
 		

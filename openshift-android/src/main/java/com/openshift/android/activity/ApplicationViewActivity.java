@@ -138,7 +138,6 @@ public class ApplicationViewActivity extends Activity {
 		
 		
 		for(int i = 0; i<cartridgeResources.size();i++){
-			Log.v(ApplicationViewActivity.class.getPackage().getName(),"Cartridge Name: "+cartridgeResources.get(i).getName());
 			cartridgeAdapter.insert(cartridgeResources.get(i), i);
 		}
 		
@@ -146,7 +145,7 @@ public class ApplicationViewActivity extends Activity {
 		cartridgeAdapter.notifyDataSetChanged();
 	}
 	
-	private void updateList(CartridgeResource cartridgeResource) {
+	private synchronized void updateList(CartridgeResource cartridgeResource) {
 		for(int i = 0; i<cartridgeList.size();i++){
 			if(cartridgeList.get(i).getName().equals(cartridgeResource.getName())) {
 				cartridgeAdapter.remove(cartridgeList.get(i));

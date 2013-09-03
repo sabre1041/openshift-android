@@ -3,9 +3,11 @@ openshift-android
 
 Android application to manage an OpenShift account
 
-## Configuration
+## Getting Started
 
-Modify the configuration file located in _openshift-android/assets/openshiftconfiguration.properties_ with the openshift username and password
+Initialize the Maven repository by executing the following command:
+
+	mvn initialize
 
 ##Basic Commands
 

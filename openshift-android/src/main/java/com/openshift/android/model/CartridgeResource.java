@@ -243,4 +243,10 @@ public class CartridgeResource implements OpenshiftResource {
 		this.website = website;
 	}
 
+//	@Override
+//	public int compareTo(CartridgeResource another) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+
 }

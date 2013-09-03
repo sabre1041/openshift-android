@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,6 +33,8 @@ public class LoginActivity extends Activity {
 	private EditText openshiftAccount;
 	
 	private EditText openshiftPassword;
+	
+	private Button loginButton;
 		
 	private static final String OPENSHIFT_DEFAULT_URL = "https://openshift.redhat.com/broker/rest/";
 	
@@ -57,6 +60,8 @@ public class LoginActivity extends Activity {
 	    openshiftAccount = (EditText) findViewById(R.id.openshiftAccount);
 	    
 	    openshiftPassword = (EditText) findViewById(R.id.openshiftPassword);
+	    
+	    loginButton = (Button) findViewById(R.id.loginButton);
 	   
 	    
 	}
@@ -68,8 +73,11 @@ public class LoginActivity extends Activity {
 	 */
     public void loginClick(View v) {
     	
+    	loginButton.setEnabled(false);
+    	
     	if(openshiftAccount.getText().toString().length()==0 || openshiftPassword.getText().toString().trim().length()==0) {
     		Toast.makeText(getApplicationContext(), "Openshift Account and Password are Required", Toast.LENGTH_SHORT).show();
+    		loginButton.setEnabled(true);
     		return;
     	}
     	
@@ -80,6 +88,7 @@ public class LoginActivity extends Activity {
 		progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 		progressDialog.setTitle("Validating");
 		progressDialog.setMessage("Validating with Openshift");
+		progressDialog.setIndeterminate(true);
 		progressDialog.show();
 
 	    OpenshiftRestManager.getInstance().getUser(new Response.Listener<OpenshiftResponse<UserResource>>() {
@@ -101,6 +110,7 @@ public class LoginActivity extends Activity {
 						authenticationManager.invalidateAuthentication();
 						new AlertDialog.Builder(LoginActivity.this).setTitle("Failure").setMessage("Could not validate credentials").setNeutralButton("Close", null).create().show();
 						openshiftPassword.setText("");
+						loginButton.setEnabled(true);
 					}
 				});
 
