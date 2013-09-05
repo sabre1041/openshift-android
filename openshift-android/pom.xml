@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.openshift.android</groupId>
 		<artifactId>openshift-android-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.2_dev-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 
@@ -19,9 +19,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.google</groupId>
-			<artifactId>volley</artifactId>
-			<version>1.0.0-SNAPSHOT-patch01</version>
+			<groupId>com.openshift.android</groupId>
+			<artifactId>openshift-volley</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
@@ -114,12 +114,12 @@
 
 						<inherited>false</inherited>
 						<configuration>
-							<file>lib/volley-1.0.0-SNAPSHOT-patch01.jar</file>
+							<file>lib/openshift-volley-0.0.1-SNAPSHOT.jar</file>
 							<groupId>com.google</groupId>
 							<artifactId>volley</artifactId>
 							<packaging>jar</packaging>
 							<pomFile>lib/volley-pom.xml</pomFile>
-							<version>1.0.0-SNAPSHOT-patch01</version>
+							<version>0.0.1-SNAPSHOT</version>
 							<generatePom>true</generatePom>
 							<createChecksum>true</createChecksum>
 						</configuration>

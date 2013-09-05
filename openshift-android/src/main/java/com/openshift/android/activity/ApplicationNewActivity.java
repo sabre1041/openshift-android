@@ -164,6 +164,7 @@ public class ApplicationNewActivity extends Activity {
 
 				@Override
 				public void onErrorResponse(VolleyError error) {
+					Log.v(ApplicationNewActivity.class.getPackage().getName(),"Error Class: "+error.getClass());
 					createAppButton.setEnabled(true);
 					progressDialog.dismiss();
 					new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage("Failed to Create Application").setNeutralButton("Close", null).create().show();
