@@ -15,10 +15,6 @@ import android.preference.PreferenceManager;
  * @author Andrew Block
  *
  */
-/**
- * @author Andrew Block
- *
- */
 public class AuthorizationManager {
 	
 	private final SharedPreferences sharedPreferences;
@@ -91,21 +87,21 @@ public class AuthorizationManager {
 	
 	
 	/**
-	 * @return the Openshift Account
+	 * @return the OpenShift Account
 	 */
 	public String getOpenshiftAccount() {
 		return sharedPreferences.getString(PREF_NAME_OPENSHIFT_ACCOUNT, null);
 	}
 	
 	/**
-	 * @return The Openshift Password
+	 * @return The OpenShift Password
 	 */
 	public String getOpenshiftPassword() {
 		return sharedPreferences.getString(PREF_NAME_OPENSHIFT_PASSWORD, null);
 	}
 	
 	/**
-	 * @return The Openshift Rest Service base URL
+	 * @return The OpenShift Rest Service base URL
 	 */
 	public String getOpenshiftUrl() {
 		return sharedPreferences.getString(PREF_NAME_OPENSHIFT_URL, null);

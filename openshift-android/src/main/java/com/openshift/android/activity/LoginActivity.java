@@ -18,6 +18,7 @@ import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.model.UserResource;
 import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.security.AuthorizationManager;
+import com.openshift.android.util.ActivityUtils;
 
 /**
  * Primary entry point to the application. Allows the user to use their OpenShift 
@@ -76,7 +77,7 @@ public class LoginActivity extends Activity {
     	loginButton.setEnabled(false);
     	
     	if(openshiftAccount.getText().toString().length()==0 || openshiftPassword.getText().toString().trim().length()==0) {
-    		Toast.makeText(getApplicationContext(), "Openshift Account and Password are Required", Toast.LENGTH_SHORT).show();
+    		ActivityUtils.showToast(getApplicationContext(), "Openshift Account and Password are Required");
     		loginButton.setEnabled(true);
     		return;
     	}

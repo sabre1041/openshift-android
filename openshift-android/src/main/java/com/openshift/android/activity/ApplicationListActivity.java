@@ -1,10 +1,7 @@
 package com.openshift.android.activity;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -16,20 +13,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
-import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
 import com.openshift.android.model.ApplicationResource;
@@ -37,8 +28,8 @@ import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.EventType;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
-import com.openshift.android.rest.OpenshiftAndroidRequest;
 import com.openshift.android.rest.OpenshiftRestManager;
+import com.openshift.android.util.ActivityUtils;
 
 /**
  * Displays a list of Applications within an OpenShift Domain
@@ -126,19 +117,6 @@ public class ApplicationListActivity extends ListActivity {
 	}
 	
 	
-	/**
-	 * Shows a short toast display
-	 * 
-	 * @param message message to display
-	 */
-	private void showToast(String message) {
-		if(!isFinishing()){
-			Toast toast = Toast.makeText(this,message, Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER, 0, 0);
-			toast.show();
-
-		}
-	}
 	 /**
 	  * Displays a list of available options when a long click action is performed on the List
 	  */	
@@ -284,7 +262,7 @@ public class ApplicationListActivity extends ListActivity {
 		applicationAdapter.notifyDataSetChanged();
 	}
 	
-	private void executeApplicationEvent(String applicationName, EventType eventType, final String responseMessage) {
+	private void executeApplicationEvent(final String applicationName, EventType eventType, final String responseMessage) {
 		
 		OpenshiftRestManager.getInstance().applicationEvent(domainResource.getName(), applicationName, eventType,
 				new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
@@ -292,7 +270,7 @@ public class ApplicationListActivity extends ListActivity {
 					@Override
 					public void onResponse(
 							OpenshiftResponse<ApplicationResource> response) {
-						applicationActionResponse(true, "Application Successfully "+responseMessage, responseMessage);
+						applicationActionResponse(true, applicationName + " Successfully "+responseMessage, responseMessage);
 						
 						// Get a fresh set of data
 						makeApplicationListRequest();
@@ -323,7 +301,7 @@ public class ApplicationListActivity extends ListActivity {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						showToast("Cannot get Application List: "+error.getMessage());
+						ActivityUtils.showToast(getApplicationContext(), "Unable to get Application List");
 					}
 				});
 

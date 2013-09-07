@@ -6,11 +6,8 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +17,7 @@ import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestManager;
+import com.openshift.android.util.ActivityUtils;
 
 
 public class ApplicationViewActivity extends Activity {
@@ -37,7 +35,6 @@ public class ApplicationViewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    
 	    setContentView(R.layout.activity_application);
 	    
 	    Intent intent = getIntent();
@@ -80,7 +77,7 @@ public class ApplicationViewActivity extends Activity {
 
 										@Override
 										public void onErrorResponse(VolleyError error) {
-											showToast("Cannot get Application List: "+error.getMessage());
+											ActivityUtils.showToast(getApplicationContext(), "Unable to Retrieve Application");
 										}
 									});	
 						}
@@ -91,7 +88,7 @@ public class ApplicationViewActivity extends Activity {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						showToast("Cannot get Application: "+error.getMessage());
+						ActivityUtils.showToast(getApplicationContext(), "Unable to Retrieve Application");
 					}
 				});
 	    
@@ -106,20 +103,7 @@ public class ApplicationViewActivity extends Activity {
 		super.onPause();
 	}
 	
-	/**
-	 * Shows a short toast display
-	 * 
-	 * @param message message to display
-	 */
-	private void showToast(String message) {
-		if(!isFinishing()){
-			Toast toast = Toast.makeText(this,message, Toast.LENGTH_SHORT);
-			toast.setGravity(Gravity.CENTER, 0, 0);
-			toast.show();
 
-		}
-
-	}
 	
 	@Override
 	public void onResume() {

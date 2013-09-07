@@ -23,6 +23,8 @@ public class OpenshiftResponse<T extends OpenshiftResource> implements Openshift
 	private String type;
 	private String version;
 	private List<OpenshiftMessage> messages = new ArrayList<OpenshiftMessage>();
+	private List<OpenshiftMessage> errors = new ArrayList<OpenshiftMessage>();
+
 	private T data;
 	
 	public String getApiVersion() {
@@ -60,6 +62,12 @@ public class OpenshiftResponse<T extends OpenshiftResource> implements Openshift
 	}
 	public void setMessages(List<OpenshiftMessage> messages) {
 		this.messages = messages;
+	}
+	public List<OpenshiftMessage> getErrors() {
+		return errors;
+	}
+	public void setErrors(List<OpenshiftMessage> errors) {
+		this.errors = errors;
 	}
 	
 	

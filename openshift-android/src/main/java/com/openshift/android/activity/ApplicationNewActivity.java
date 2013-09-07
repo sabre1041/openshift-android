@@ -13,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,7 +27,9 @@ import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.NameValuePair;
 import com.openshift.android.model.OpenshiftDataList;
+import com.openshift.android.model.OpenshiftMessage;
 import com.openshift.android.model.OpenshiftResponse;
+import com.openshift.android.rest.OpenshiftRestError;
 import com.openshift.android.rest.OpenshiftRestManager;
 
 public class ApplicationNewActivity extends Activity {
@@ -164,10 +165,26 @@ public class ApplicationNewActivity extends Activity {
 
 				@Override
 				public void onErrorResponse(VolleyError error) {
-					Log.v(ApplicationNewActivity.class.getPackage().getName(),"Error Class: "+error.getClass());
+					
 					createAppButton.setEnabled(true);
 					progressDialog.dismiss();
-					new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage("Failed to Create Application").setNeutralButton("Close", null).create().show();
+					
+					if(error instanceof OpenshiftRestError) {
+						OpenshiftRestError e = (OpenshiftRestError) error;
+						OpenshiftResponse<ApplicationResource> errObj = (OpenshiftResponse<ApplicationResource>) e.getObject();
+						
+						StringBuilder sb = new StringBuilder();
+						if(errObj.getMessages() != null) {
+							for(OpenshiftMessage message : errObj.getMessages()) {
+								sb.append(message.getText());
+							}
+						}
+						new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage(sb.toString()).setNeutralButton("Close", null).create().show();
+					}
+					else {
+
+						new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage("Failed to Create Application").setNeutralButton("Close", null).create().show();
+					}
 					
 				}
 			});

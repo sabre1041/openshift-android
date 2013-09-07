@@ -39,6 +39,17 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<developers>
+		<developer>
+			<id>andy</id>
+			<name>Andrew Block</name>		
+		</developer>
+		<developer>
+			<id>joey</id>
+			<name>Joey Yore</name>
+		</developer>
+	</developers>
+
 	<build>
 		<pluginManagement>
 			<plugins>

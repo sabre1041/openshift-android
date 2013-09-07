@@ -5,10 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application android:allowBackup="true" android:debuggable="true" android:icon="@drawable/openshift_logo" android:label="@string/app_name" android:name="OpenshiftAndroidApplication" android:theme="@style/AppTheme">
-        <activity android:label="Domains" android:name="com.openshift.android.activity.DomainActivity"/>
-        <activity android:label="Applications" android:name="com.openshift.android.activity.ApplicationListActivity"/>
-        <activity android:name="com.openshift.android.activity.ApplicationViewActivity"/>
-        <activity android:label="Login to Openshift Android" android:name="com.openshift.android.activity.LoginActivity">
+        <activity android:label="Domains" android:name="com.openshift.android.activity.DomainActivity" android:screenOrientation="portrait"/>
+        <activity android:label="Applications" android:name="com.openshift.android.activity.ApplicationListActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.openshift.android.activity.ApplicationViewActivity" android:screenOrientation="portrait"/>
+        <activity android:label="Login to Openshift Android" android:name="com.openshift.android.activity.LoginActivity" android:screenOrientation="portrait">
 		  <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

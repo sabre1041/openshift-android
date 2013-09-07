@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UnknownFormatConversionException;
 
 import android.util.Base64;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -15,11 +16,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.OpenshiftConstants;
+import com.openshift.android.activity.ApplicationNewActivity;
 import com.openshift.android.security.AuthorizationManager;
 
 public class OpenshiftAndroidRequest<T> extends Request<T> {
@@ -54,7 +58,8 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
 		this.listener = listener;
 	}
 	
-    @Override
+
+	@Override
     public Map<String, String> getParams() {
     	Map<String, String> params = parameters != null ? parameters : new HashMap<String,String>();
     	
@@ -110,10 +115,31 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
 			return Response.error(new ParseError(e));
 		}
 	}
-	
+		
 	@Override
     public String getBodyContentType() {
         return "application/x-www-form-urlencoded";
+    }
+	
+	@Override
+    protected VolleyError parseNetworkError(VolleyError volleyError) {
+		
+		if(volleyError.networkResponse != null && volleyError.networkResponse.data != null) {
+			try {
+				String json = new String(volleyError.networkResponse.data,
+						HttpHeaderParser.parseCharset(volleyError.networkResponse.headers));
+				T response = getJson(json);
+				
+				return new OpenshiftRestError(volleyError.networkResponse, response);
+			}
+			catch(Exception e) {
+				return volleyError;
+			}
+		}
+		else {
+			return volleyError;
+		}
+	
     }
 
 
@@ -128,4 +154,5 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
 
 		throw new UnknownFormatConversionException("Class or Type not Defined");
 	}
+	
 }
