@@ -11,6 +11,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.google.gson.reflect.TypeToken;
 import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.DomainResource;
@@ -34,7 +35,7 @@ public class OpenshiftRestManager {
 		return instance;
 	}
 	
-	public void getUser(com.android.volley.Response.Listener<OpenshiftResponse<UserResource>> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void getUser(Response.Listener<OpenshiftResponse<UserResource>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("user");
@@ -45,7 +46,7 @@ public class OpenshiftRestManager {
 		
 	}	
 	
-	public void listDomains(com.android.volley.Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void listDomains(Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -56,7 +57,7 @@ public class OpenshiftRestManager {
 		
 	}
 	
-	public void listApplications(String domainName, com.android.volley.Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, Response.ErrorListener errorListener) {
+	public void listApplications(String domainName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -69,7 +70,7 @@ public class OpenshiftRestManager {
 		
 	}
 	
-	public void getApplicationWithCartridge(String domainName, String applicationName, com.android.volley.Response.Listener<OpenshiftResponse<ApplicationResource>> listener, com.android.volley.Response.ErrorListener errorListener) {
+	public void getApplicationWithCartridge(String domainName, String applicationName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -114,6 +115,79 @@ public class OpenshiftRestManager {
 		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
 		
 	}
+	
+	public void getApplicationAliases(String domainName, String applicationName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(domainName);
+		builder.appendPath("applications");
+		builder.appendPath(applicationName);
+		builder.appendPath("aliases");
+				
+	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>>() {}.getType();
+
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		
+	}
+	
+	public void createApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(alias.getApplicationResource().getDomainId());
+		builder.appendPath("applications");
+		builder.appendPath(alias.getApplicationResource().getName());
+		builder.appendPath("aliases");
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("id", alias.getId());
+		
+	    Type type = new TypeToken<OpenshiftResponse<ApplicationAliasResource>>() {}.getType();
+
+		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+		
+	}
+
+	
+	
+	/**
+	 * Updates an Application Alias. NOTE: This method cannot be used until SSL Certificates are implemented into Application
+	 * 
+	 * @param alias
+	 * @param listener
+	 * @param errorListener
+	 */
+	public void updateApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(alias.getApplicationResource().getDomainId());
+		builder.appendPath("applications");
+		builder.appendPath(alias.getApplicationResource().getName());
+		builder.appendPath("aliases");
+				
+	    Type type = new TypeToken<OpenshiftResponse<ApplicationAliasResource>>() {}.getType();
+
+		processRequest(Method.PUT, builder.build().toString(), type, null, null, listener, errorListener);
+		
+	}
+	
+	public void removeAlias(String domainName, String applicationName, String aliasName, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(domainName);
+		builder.appendPath("applications");
+		builder.appendPath(applicationName);
+		builder.appendPath("aliases");
+		builder.appendPath(aliasName);		
+		
+	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>>() {}.getType();
+
+		processRequest(Method.DELETE, builder.build().toString(), type, null, null, listener, errorListener);
+		
+	}	
 	
 	public void createApplication(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
 
@@ -186,6 +260,10 @@ public class OpenshiftRestManager {
 		
 		
 		return builder;
+	}
+	
+	public void cancelRequests(String tag) {
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(tag);
 	}
 	
 	

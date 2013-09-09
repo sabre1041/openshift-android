@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:id="@+id/appInfoTableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp" >
+
+        <TableRow
+            android:id="@+id/appInfoTableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/appInfo_appNameLabel"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name:" />
+            
+            <TextView
+                android:id="@+id/appInfo_appName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />            
+        </TableRow>
+
+         <TableRow
+            android:id="@+id/appInfoTableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/appInfo_appFrameworkLabel"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Framework:" />
+            
+            <TextView
+                android:id="@+id/appInfo_appFramework"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />            
+        </TableRow>
+        <TableRow
+            android:id="@+id/appInfoTableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+ 		<TextView
+                android:id="@+id/appInfo_gearProfileLabel"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gear Profile: " />
+            
+            <TextView
+                android:id="@+id/appInfo_gearProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />              
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/appInfoTableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+ 		<TextView
+                android:id="@+id/appInfo_gearCountLabel"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gear Count: " />
+            
+            <TextView
+                android:id="@+id/appInfo_gearCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />              
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/appInfoTableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+ 		<TextView
+                android:id="@+id/appInfo_dateCreatedLabel"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Created: " />
+            
+            <TextView
+                android:id="@+id/appInfo_dateCreated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />                          
+        </TableRow>
+    </TableLayout>
+
+</RelativeLayout>

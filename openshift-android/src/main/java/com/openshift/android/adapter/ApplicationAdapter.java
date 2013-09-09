@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.openshift.android.R;
+import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.ApplicationResource;
+import com.openshift.android.model.CartridgeResource;
 
 /**
  * Adapter which provides a menu of Openshift Applications for a User
@@ -52,5 +54,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationResource> {
 		return vi;
 		
 	}
+	
+
 
 }

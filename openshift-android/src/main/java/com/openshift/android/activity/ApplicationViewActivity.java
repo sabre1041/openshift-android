@@ -19,7 +19,7 @@ import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.util.ActivityUtils;
 
-
+@Deprecated
 public class ApplicationViewActivity extends Activity {
 	private CartridgeAdapter cartridgeAdapter;
 	

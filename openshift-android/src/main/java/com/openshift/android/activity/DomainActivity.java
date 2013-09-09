@@ -9,17 +9,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.openshift.android.R;
+import com.openshift.android.adapter.DomainAdapter;
 import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftResponse;
@@ -39,7 +37,7 @@ public class DomainActivity extends ListActivity {
 		
 	public static final String DOMAIN_RESOURCE_EXTRA = "com.openshift.android.DOMAIN_MESSAGE";
 
-	private ArrayAdapter<DomainResource> domainAdapter;
+	private DomainAdapter domainAdapter;
 	private List<DomainResource> domainList = new ArrayList<DomainResource>();
 	
 
@@ -49,7 +47,7 @@ public class DomainActivity extends ListActivity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_domain);
 	    	    
-	    domainAdapter = new ArrayAdapter<DomainResource>(this, R.layout.simple_textview_layout, android.R.id.text1, domainList);
+	    domainAdapter = new DomainAdapter(this, R.layout.domain_row_layout, domainList);
 	    setListAdapter(domainAdapter);
 	    
 	    OpenshiftRestManager.getInstance().listDomains(new Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {

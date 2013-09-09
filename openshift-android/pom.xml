@@ -15,8 +15,6 @@
 	<name>openshift-android - Application</name>
 
 
-
-
 	<dependencies>
 		<dependency>
 			<groupId>com.openshift.android</groupId>

@@ -87,8 +87,8 @@ public class ApplicationListActivity extends ListActivity {
 	protected void onListItemClick (ListView l, View v, int position, long id) {
 		
 		ApplicationResource applicationResource = (ApplicationResource) l.getAdapter().getItem(position);
-		Intent intent = new Intent(this, ApplicationViewActivity.class);
-		intent.putExtra(ApplicationListActivity.APPLICATION_RESOURCE_EXTRA, applicationResource);
+		Intent intent = new Intent(this, ApplicationsActivity.class);
+		intent.putExtra(ApplicationsActivity.APPLICATION_RESOURCE_EXTRA, applicationResource);
 		startActivity(intent);
 	}
 	

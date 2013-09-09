@@ -77,7 +77,7 @@ public class LoginActivity extends Activity {
     	loginButton.setEnabled(false);
     	
     	if(openshiftAccount.getText().toString().length()==0 || openshiftPassword.getText().toString().trim().length()==0) {
-    		ActivityUtils.showToast(getApplicationContext(), "Openshift Account and Password are Required");
+    		ActivityUtils.showToast(getApplicationContext(), "OpenShift Account and Password are Required");
     		loginButton.setEnabled(true);
     		return;
     	}
@@ -88,7 +88,7 @@ public class LoginActivity extends Activity {
     	
 		progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 		progressDialog.setTitle("Validating");
-		progressDialog.setMessage("Validating with Openshift");
+		progressDialog.setMessage("Validating with OpenShift");
 		progressDialog.setIndeterminate(true);
 		progressDialog.show();
 
