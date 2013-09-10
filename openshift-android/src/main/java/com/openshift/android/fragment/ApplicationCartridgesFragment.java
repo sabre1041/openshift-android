@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.activity.ApplicationsActivity;
 import com.openshift.android.adapter.CartridgeAdapter;
@@ -86,6 +88,14 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 		
 	}
 	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG);
+
+	}
+	
 	public void loadData() {
 		OpenshiftRestManager.getInstance().getApplicationWithCartridge(applicationResource.getDomainId(), applicationResource.getName(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
 
@@ -110,7 +120,7 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 								public void onErrorResponse(VolleyError error) {
 									ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to Retrieve Application");
 								}
-							});	
+							}, OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG);	
 				}
 
 				
@@ -121,7 +131,7 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 			public void onErrorResponse(VolleyError error) {
 				ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to Retrieve Application");
 			}
-		});
+		}, OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG);
 
 	}
 

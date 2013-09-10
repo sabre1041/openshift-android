@@ -13,6 +13,8 @@ import android.widget.EditText;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.OpenshiftMessage;
@@ -136,7 +138,7 @@ public class AliasActivity extends Activity {
 					}
 					
 				}
-			});
+			}, OpenshiftConstants.ALIASACTIVITY_TAG);
 
 			
 			
@@ -153,6 +155,14 @@ public class AliasActivity extends Activity {
 		
 	}
 	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.ALIASACTIVITY_TAG);
+
+    }
 	
 	
 	

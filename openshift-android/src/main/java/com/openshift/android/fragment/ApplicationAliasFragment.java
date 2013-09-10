@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.activity.AliasActivity;
 import com.openshift.android.activity.ApplicationsActivity;
@@ -59,7 +61,7 @@ public class ApplicationAliasFragment extends ListFragment {
 	    public void onActivityCreated(Bundle savedInstanceState) {
 	     	super.onActivityCreated(savedInstanceState);
 	     	
-	     	aliasesAdapter = new ApplicationAliasesAdapter(getActivity(), R.layout.aliases_row_layout, applicationAliases);
+	     	aliasesAdapter = new ApplicationAliasesAdapter(getActivity(), R.layout.aliases_row_layout, applicationAliases, OpenshiftConstants.APPLICATIONALIASFRAGMENT_TAG);
 	 	    setListAdapter(aliasesAdapter);
 
 	     	
@@ -71,6 +73,14 @@ public class ApplicationAliasFragment extends ListFragment {
 	     	
 	     	loadData();
 	     }
+	    
+	    @Override
+	    public void onDestroy() {
+	    	super.onDestroy();
+	    	
+			OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONALIASFRAGMENT_TAG);
+	    	
+	    }
 
 	  
 		public void loadData() {
@@ -90,7 +100,7 @@ public class ApplicationAliasFragment extends ListFragment {
 						public void onErrorResponse(VolleyError error) {
 							ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to get Application Aliases");
 						}
-					});
+					}, OpenshiftConstants.APPLICATIONALIASFRAGMENT_TAG);
 
 		}
 		

@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.fragment.ApplicationAliasFragment;
 import com.openshift.android.fragment.ApplicationCartridgesFragment;
@@ -199,7 +201,7 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
 							public void onErrorResponse(VolleyError error) {
 								applicationActionResponse(false, null, responseMessage);
 							}
-						});
+						}, OpenshiftConstants.APPLICATIONSACTIVITY_TAG);
 
 			}
 		 
@@ -288,7 +290,7 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
         }
 
         public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-            if (mFragment != null) {
+            if (mFragment != null) {            	
                 ft.detach(mFragment);
             }
         }
@@ -303,6 +305,18 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
 		this.applicationResource = applicationResource;
 		
 	}
+	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONSACTIVITY_TAG);
+
+    }
+
+	
+	
 
 
 

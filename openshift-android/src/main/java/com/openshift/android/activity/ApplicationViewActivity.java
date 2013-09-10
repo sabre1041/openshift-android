@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.adapter.CartridgeAdapter;
 import com.openshift.android.model.ApplicationResource;
@@ -79,7 +81,7 @@ public class ApplicationViewActivity extends Activity {
 										public void onErrorResponse(VolleyError error) {
 											ActivityUtils.showToast(getApplicationContext(), "Unable to Retrieve Application");
 										}
-									});	
+									},OpenshiftConstants.APPLICATIONSACTIVITY_TAG);	
 						}
 
 						
@@ -90,7 +92,7 @@ public class ApplicationViewActivity extends Activity {
 					public void onErrorResponse(VolleyError error) {
 						ActivityUtils.showToast(getApplicationContext(), "Unable to Retrieve Application");
 					}
-				});
+				}, OpenshiftConstants.APPLICATIONSACTIVITY_TAG);
 	    
 
 	    
@@ -111,6 +113,15 @@ public class ApplicationViewActivity extends Activity {
 		super.onResume();
 		
 	}
+	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONSACTIVITY_TAG);
+
+    }
 	
 	/**
 	 * Binds the Application Response Data to the List

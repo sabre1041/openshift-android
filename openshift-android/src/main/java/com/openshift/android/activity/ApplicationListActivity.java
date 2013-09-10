@@ -21,6 +21,8 @@ import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.adapter.ApplicationAdapter;
 import com.openshift.android.model.ApplicationResource;
@@ -282,7 +284,7 @@ public class ApplicationListActivity extends ListActivity {
 					public void onErrorResponse(VolleyError error) {
 						applicationActionResponse(false, null, responseMessage);
 					}
-				});
+				}, OpenshiftConstants.APPLICATIONLISTACTIVITY_TAG);
 
 	}
 	
@@ -303,9 +305,19 @@ public class ApplicationListActivity extends ListActivity {
 					public void onErrorResponse(VolleyError error) {
 						ActivityUtils.showToast(getApplicationContext(), "Unable to get Application List");
 					}
-				});
+				}, OpenshiftConstants.APPLICATIONLISTACTIVITY_TAG);
 
 	}
+	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONLISTACTIVITY_TAG);
+
+    }
+
 	
 	
 

@@ -15,4 +15,15 @@ public class OpenshiftConstants {
 	
 	public static final String LOGINACTIVITY_TAG = "LoginActivityTag";
 	
+	public static final String ALIASACTIVITY_TAG = "AliasActivityTag";
+	
+	public static final String APPLICATIONNEWACTIVITY_TAG = "ApplicationNewActivityTag";
+	
+	public static final String APPLICATIONSACTIVITY_TAG = "ApplicationsActivityTag";
+	
+	public static final String APPLICATIONALIASFRAGMENT_TAG = "ApplicationAliasFragmentTag";
+	
+	public static final String APPLICATIONCARTRIDGESFRAGMENT_TAG = "ApplicationCartridgesFragmentTag";
+	
+	
 }

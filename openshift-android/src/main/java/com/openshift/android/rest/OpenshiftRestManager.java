@@ -35,29 +35,29 @@ public class OpenshiftRestManager {
 		return instance;
 	}
 	
-	public void getUser(Response.Listener<OpenshiftResponse<UserResource>> listener, Response.ErrorListener errorListener) {
+	public void getUser(Response.Listener<OpenshiftResponse<UserResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("user");
 		
 	    Type type = new TypeToken<OpenshiftResponse<UserResource>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}	
 	
-	public void listDomains(Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>> listener, Response.ErrorListener errorListener) {
+	public void listDomains(Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
 		
 	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void listApplications(String domainName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, Response.ErrorListener errorListener) {
+	public void listApplications(String domainName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -66,11 +66,11 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void getApplicationWithCartridge(String domainName, String applicationName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
+	public void getApplicationWithCartridge(String domainName, String applicationName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -82,11 +82,11 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void getCartridge(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<CartridgeResource>> listener, Response.ErrorListener errorListener) {
+	public void getCartridge(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<CartridgeResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -100,23 +100,23 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<CartridgeResource>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}	
 	
 
-	public void getAvailableCartridges(Response.Listener<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>> listener, Response.ErrorListener errorListener) {
+	public void getAvailableCartridges(Response.Listener<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("cartridges");
 				
 	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void getApplicationAliases(String domainName, String applicationName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>> listener, Response.ErrorListener errorListener) {
+	public void getApplicationAliases(String domainName, String applicationName, Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -127,11 +127,11 @@ public class OpenshiftRestManager {
 				
 	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>>() {}.getType();
 
-		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.GET, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void createApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+	public void createApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -145,7 +145,7 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<ApplicationAliasResource>>() {}.getType();
 
-		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener, tag);
 		
 	}
 
@@ -158,7 +158,7 @@ public class OpenshiftRestManager {
 	 * @param listener
 	 * @param errorListener
 	 */
-	public void updateApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+	public void updateApplicationAlias(ApplicationAliasResource alias, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -169,11 +169,11 @@ public class OpenshiftRestManager {
 				
 	    Type type = new TypeToken<OpenshiftResponse<ApplicationAliasResource>>() {}.getType();
 
-		processRequest(Method.PUT, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.PUT, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}
 	
-	public void removeAlias(String domainName, String applicationName, String aliasName, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener) {
+	public void removeAlias(String domainName, String applicationName, String aliasName, Response.Listener<OpenshiftResponse<ApplicationAliasResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -185,11 +185,11 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>>() {}.getType();
 
-		processRequest(Method.DELETE, builder.build().toString(), type, null, null, listener, errorListener);
+		processRequest(Method.DELETE, builder.build().toString(), type, null, null, listener, errorListener, tag);
 		
 	}	
 	
-	public void createApplication(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
+	public void createApplication(String domainName, String applicationName, String cartridgeName, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener, String tag) {
 
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -202,11 +202,11 @@ public class OpenshiftRestManager {
 		
 	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
 		
-		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener, tag);
 		
 	}
 	
-	public void applicationEvent(String domainName, String applicationName, EventType eventType, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener) {
+	public void applicationEvent(String domainName, String applicationName, EventType eventType, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener, String tag) {
 		
 		Uri.Builder builder = getUriBuilder();
 		builder.appendPath("domains");
@@ -226,10 +226,10 @@ public class OpenshiftRestManager {
 			case STOP:
 			case RESTART:
 				builder.appendPath("events");
-				processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener);
+				processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener, tag);
 				break;
 			case DELETE:
-				processRequest(Method.DELETE, builder.build().toString(), type, null, params, listener, errorListener);
+				processRequest(Method.DELETE, builder.build().toString(), type, null, params, listener, errorListener, tag);
 				break;
 			}
 			
@@ -238,7 +238,7 @@ public class OpenshiftRestManager {
 	
 
 	
-	public <T> void processRequest(int method, String url, Type type, Map<String,String> headers, Map<String,String> params, Response.Listener<T> listener, Response.ErrorListener errorListener) {
+	public <T> void processRequest(int method, String url, Type type, Map<String,String> headers, Map<String,String> params, Response.Listener<T> listener, Response.ErrorListener errorListener, String tag) {
 		
 		OpenshiftAndroidRequest<T> request = new OpenshiftAndroidRequest<T>(method, url, type, headers, params, listener, errorListener);
 		
@@ -248,6 +248,7 @@ public class OpenshiftRestManager {
                 0, 
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
+		request.setTag(tag);
 		
 		OpenshiftAndroidApplication.getInstance().getRequestQueue().add(request);
 		

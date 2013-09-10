@@ -37,12 +37,14 @@ public class ApplicationAliasesAdapter extends ArrayAdapter<ApplicationAliasReso
 	private List<ApplicationAliasResource> objects;
 	private Context context;
 	private ProgressDialog progressDialog;
+	private String tag;
 	
 	public ApplicationAliasesAdapter(Context context, int textViewResourceId,
-			List<ApplicationAliasResource> objects) {
+			List<ApplicationAliasResource> objects, String tag) {
 		super(context, textViewResourceId, objects);
 		this.context = context;
 		this.objects = objects;
+		this.tag = tag;
 	}
 	
 	@Override
@@ -115,7 +117,7 @@ public class ApplicationAliasesAdapter extends ArrayAdapter<ApplicationAliasReso
 								new AlertDialog.Builder(context).setTitle("Failure").setMessage("Could not delete alias").setNeutralButton("Close", null).create().show();
 								
 							}
-						});
+						}, tag);
 						
 
 					

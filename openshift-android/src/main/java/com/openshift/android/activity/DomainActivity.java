@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.adapter.DomainAdapter;
 import com.openshift.android.model.DomainResource;
@@ -64,7 +66,7 @@ public class DomainActivity extends ListActivity {
 					public void onErrorResponse(VolleyError error) {
 						ActivityUtils.showToast(getApplicationContext(), "Failed to Display Domains");
 					}
-				});
+				}, OpenshiftConstants.DOMAINACTIVITY_TAG);
 	    
 	    
 	}
@@ -110,6 +112,14 @@ public class DomainActivity extends ListActivity {
 	}
 	
 
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.DOMAINACTIVITY_TAG);
+
+    }
 		
 	@Override
 	public void onPause() {

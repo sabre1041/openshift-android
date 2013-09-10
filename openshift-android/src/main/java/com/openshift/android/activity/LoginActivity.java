@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.model.UserResource;
@@ -113,14 +113,24 @@ public class LoginActivity extends Activity {
 						openshiftPassword.setText("");
 						loginButton.setEnabled(true);
 					}
-				});
+				}, OpenshiftConstants.LOGINACTIVITY_TAG);
 
     	
     }
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.LOGINACTIVITY_TAG);
 
+    }
+
+    @Override
 	public void onPause() {
 		
 		super.onPause();
+		
 	}
 	
 	@Override

@@ -21,6 +21,8 @@ import android.widget.Spinner;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.openshift.android.OpenshiftAndroidApplication;
+import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
@@ -91,7 +93,7 @@ public class ApplicationNewActivity extends Activity {
 				// TODO Auto-generated method stub
 				
 			}
-		});
+		}, OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
 	}
 	
 	
@@ -187,7 +189,7 @@ public class ApplicationNewActivity extends Activity {
 					}
 					
 				}
-			});
+			}, OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
 			
 			
 			
@@ -201,7 +203,15 @@ public class ApplicationNewActivity extends Activity {
 		
 	}
 	
-	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
+
+    }
+
 	
 	
 
