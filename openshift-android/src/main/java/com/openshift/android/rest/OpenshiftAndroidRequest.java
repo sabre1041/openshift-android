@@ -108,7 +108,7 @@ public class OpenshiftAndroidRequest<T> extends Request<T> {
 					HttpHeaderParser.parseCharset(response.headers));
 		
 			return Response.success(getJson(json),
-					HttpHeaderParser.parseCacheHeaders(response));
+					HttpHeaderParser.parseIgnoreCacheHeaders(response));
 		} catch (UnsupportedEncodingException e) {
 			return Response.error(new ParseError(e));
 		} catch (JsonSyntaxException e) {
