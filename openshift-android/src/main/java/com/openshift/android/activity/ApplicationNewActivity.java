@@ -14,7 +14,6 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,10 +23,10 @@ import com.android.volley.VolleyError;
 import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
+import com.openshift.android.adapter.NewApplicationCartridgeAdapter;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.DomainResource;
-import com.openshift.android.model.NameValuePair;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftMessage;
 import com.openshift.android.model.OpenshiftResponse;
@@ -36,8 +35,8 @@ import com.openshift.android.rest.OpenshiftRestManager;
 
 public class ApplicationNewActivity extends Activity {
 
-	private ArrayAdapter<NameValuePair> cartridgeAdapter;
-	private List<NameValuePair> cartridgeTypeList = new ArrayList<NameValuePair>();
+	private NewApplicationCartridgeAdapter cartridgeAdapter;
+	private List<CartridgeResource> cartridgeList = new ArrayList<CartridgeResource>();
 	private Spinner cartridgeTypeSpinner;
 	private EditText appName;
 	private Button createAppButton;
@@ -60,7 +59,7 @@ public class ApplicationNewActivity extends Activity {
 	    createAppButton = (Button) findViewById(R.id.new_app_button_create);
 	    
 	    
-	    cartridgeAdapter = new ArrayAdapter<NameValuePair>(this, R.layout.simple_textview_layout,cartridgeTypeList);
+	    cartridgeAdapter = new NewApplicationCartridgeAdapter(this, R.layout.simple_textview_layout,cartridgeList);
 	    cartridgeTypeSpinner.setAdapter(cartridgeAdapter);
 	    
 	    OpenshiftRestManager.getInstance().getAvailableCartridges(new Response.Listener<OpenshiftResponse<OpenshiftDataList<CartridgeResource>>>() {
@@ -121,7 +120,7 @@ public class ApplicationNewActivity extends Activity {
 		for(int i = 0; i<cartridgeResources.size();i++){ 
 			CartridgeResource cartridgeResource = cartridgeResources.get(i);
 			
-			cartridgeAdapter.insert(new NameValuePair(cartridgeResource.getDisplayName(), cartridgeResource.getName()), i);
+			cartridgeAdapter.insert(cartridgeResource, i);
 		}
 		
 		cartridgeAdapter.setNotifyOnChange(true);					
@@ -132,7 +131,7 @@ public class ApplicationNewActivity extends Activity {
 		
 		createAppButton.setEnabled(false);
 		
-		NameValuePair selectedCartridge = (NameValuePair) cartridgeTypeSpinner.getSelectedItem();
+		CartridgeResource selectedCartridge = (CartridgeResource) cartridgeTypeSpinner.getSelectedItem();
 		
 		if(selectedCartridge != null) {
 		
@@ -142,7 +141,7 @@ public class ApplicationNewActivity extends Activity {
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 	
-			OpenshiftRestManager.getInstance().createApplication(domainResource.getName(), appName.getText().toString(), selectedCartridge.getValue(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
+			OpenshiftRestManager.getInstance().createApplication(domainResource.getName(), appName.getText().toString(), selectedCartridge.getName(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
 
 				@Override
 				public void onResponse(

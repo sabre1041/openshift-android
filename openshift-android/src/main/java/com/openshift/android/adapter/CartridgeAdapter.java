@@ -3,20 +3,20 @@ package com.openshift.android.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.openshift.android.R;
-import com.openshift.android.activity.ApplicationListActivity;
-import com.openshift.android.activity.ApplicationViewActivity;
+import com.openshift.android.activity.DomainActivity;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
+import com.openshift.android.util.ImageUtils;
 
 /**
  * Adapter which provides a menu of OpenShift Cartridge for an Application
@@ -30,11 +30,13 @@ import com.openshift.android.model.CartridgeResource;
 public class CartridgeAdapter extends ArrayAdapter<CartridgeResource> {
 
 	private List<CartridgeResource> objects;
-	
+	private Context context;
+		
 	public CartridgeAdapter(Context context, int textViewResourceId,
 			List<CartridgeResource> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
+		this.context = context;
 	}
 	
 	@Override
@@ -47,9 +49,12 @@ public class CartridgeAdapter extends ArrayAdapter<CartridgeResource> {
 			vi = inflater.inflate(R.layout.cartridge_row_layout, parent, false);
 		}
 		
-		vi.setClickable(false);
+		vi.setClickable(false);		
 		
 		CartridgeResource cartridge = objects.get(position);
+		
+		ImageView cartridgeLogo = (ImageView) vi.findViewById(R.id.cartridgeImageView);
+		cartridgeLogo.setImageResource((ImageUtils.getImageResourceId(context, cartridge.getName())));
 		
 		TextView cartridgeName = (TextView) vi.findViewById(R.id.cartridgeName);
 		cartridgeName.setText(cartridge.getName());
@@ -83,5 +88,6 @@ public class CartridgeAdapter extends ArrayAdapter<CartridgeResource> {
 		return vi;
 		
 	}
+	
 
 }

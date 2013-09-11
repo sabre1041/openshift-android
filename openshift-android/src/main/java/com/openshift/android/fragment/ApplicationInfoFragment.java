@@ -43,6 +43,12 @@ public class ApplicationInfoFragment extends Fragment {
 		TextView appGearProfile = (TextView) view.findViewById(R.id.appInfo_gearProfile);
 		appGearProfile.setText(applicationResource.getGearProfile());
 		
+		TextView appScalable = (TextView) view.findViewById(R.id.appInfo_scalable);
+		
+		String scalable = applicationResource.isScalable() ? "Yes" : "No";
+		
+		appScalable.setText(scalable);		
+		
 		TextView appGearCount = (TextView) view.findViewById(R.id.appInfo_gearCount);
 		appGearCount.setText(applicationResource.getGearCount());
 		

@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.openshift.android.R;
 import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
+import com.openshift.android.util.ImageUtils;
 
 /**
  * Adapter which provides a menu of Openshift Applications for a User
@@ -26,11 +28,13 @@ import com.openshift.android.model.CartridgeResource;
 public class ApplicationAdapter extends ArrayAdapter<ApplicationResource> {
 
 	private List<ApplicationResource> objects;
+	private Context context;
 	
 	public ApplicationAdapter(Context context, int textViewResourceId,
 			List<ApplicationResource> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
+		this.context = context;
 	}
 	
 	@Override
@@ -44,6 +48,9 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationResource> {
 		}
 		
 		ApplicationResource application = objects.get(position);
+		
+		ImageView applicationLogo = (ImageView) vi.findViewById(R.id.applicationListImageView);
+		applicationLogo.setImageResource((ImageUtils.getImageResourceId(context, application.getFramework())));
 		
 		TextView appName = (TextView) vi.findViewById(R.id.appName);
 		appName.setText(application.getName());

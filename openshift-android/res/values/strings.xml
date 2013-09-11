@@ -24,6 +24,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="create_alias">Create Alias</string>
+    <color name="white">#FFFFFF</color>
     
 
 </resources>
