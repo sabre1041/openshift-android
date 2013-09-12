@@ -255,11 +255,10 @@ public class OpenshiftRestManager {
 			request.setShouldCache(false);
 		}
 		
-		
-		OpenshiftAndroidApplication.getInstance().getRequestQueue().add(request);
-		
 		OpenshiftAndroidApplication.getInstance().getRequestQueue().getCache().invalidate(request.getCacheKey(), false);
 		
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().add(request);
+				
 	}
 	
 	private Uri.Builder getUriBuilder() {

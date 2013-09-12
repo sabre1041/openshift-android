@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -251,10 +250,8 @@ public class ApplicationListActivity extends ListActivity {
 	 * 
 	 * @param response The response data to fill the adapter
 	 */
-	private void displayList(OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
+	private synchronized void displayList(OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
 		applicationAdapter.clear();
-		Log.v(ApplicationListActivity.class.getPackage().getName(),"Retrieved Application Size Size: "+applicationList.size());
-		
 		
 		for(int i = 0; i<response.getData().getList().size();i++){ 
 			applicationAdapter.insert(response.getData().getList().get(i), i);
