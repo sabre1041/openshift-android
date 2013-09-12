@@ -6,6 +6,7 @@ import java.util.Map;
 
 import android.net.Uri;
 
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
@@ -250,7 +251,14 @@ public class OpenshiftRestManager {
 
 		request.setTag(tag);
 		
+		if(Method.GET != request.getMethod()) {
+			request.setShouldCache(false);
+		}
+		
+		
 		OpenshiftAndroidApplication.getInstance().getRequestQueue().add(request);
+		
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().getCache().invalidate(request.getCacheKey(), false);
 		
 	}
 	
