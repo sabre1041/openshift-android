@@ -25,5 +25,7 @@ public class OpenshiftConstants {
 	
 	public static final String APPLICATIONCARTRIDGESFRAGMENT_TAG = "ApplicationCartridgesFragmentTag";
 	
+	public static final String CARTRIDGEACTIVITY_TAG = "CartridgeActivityTag";
+	
 	
 }

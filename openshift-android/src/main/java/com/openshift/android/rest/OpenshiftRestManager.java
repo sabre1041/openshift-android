@@ -6,7 +6,6 @@ import java.util.Map;
 
 import android.net.Uri;
 
-import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
@@ -150,6 +149,25 @@ public class OpenshiftRestManager {
 		
 	}
 
+
+	public void addCartridge(ApplicationResource applicationResource, String cartridgeName, Response.Listener<OpenshiftResponse<CartridgeResource>> listener, Response.ErrorListener errorListener, String tag) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(applicationResource.getDomainId());
+		builder.appendPath("applications");
+		builder.appendPath(applicationResource.getName());
+		builder.appendPath("cartridges");
+
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("cartridge", cartridgeName);
+		
+	    Type type = new TypeToken<OpenshiftResponse<CartridgeResource>>() {}.getType();
+
+		processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener, tag);
+		
+	}
+	
 	
 	
 	/**
@@ -218,7 +236,7 @@ public class OpenshiftRestManager {
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("event", eventType.name().toLowerCase());
 		
-	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+	    Type type = new TypeToken<OpenshiftResponse<CartridgeResource>>() {}.getType();
 		
 		if(eventType!=null) {
 			
@@ -232,10 +250,47 @@ public class OpenshiftRestManager {
 			case DELETE:
 				processRequest(Method.DELETE, builder.build().toString(), type, null, params, listener, errorListener, tag);
 				break;
+			default:
+				break;
 			}
 			
 		}
 	}
+	
+	public void cartridgeEvent(String domainName, String applicationName, String cartridgeName, EventType eventType, Response.Listener<OpenshiftResponse<ApplicationResource>> listener, Response.ErrorListener errorListener, String tag) {
+		
+		Uri.Builder builder = getUriBuilder();
+		builder.appendPath("domains");
+		builder.appendPath(domainName);
+		builder.appendPath("applications");
+		builder.appendPath(applicationName);
+		builder.appendPath("cartridges");
+		builder.appendPath(cartridgeName);
+		
+		
+		Map<String,String> params = new HashMap<String,String>();
+		params.put("event", eventType.name().toLowerCase());
+		
+	    Type type = new TypeToken<OpenshiftResponse<ApplicationResource>>() {}.getType();
+		
+		if(eventType!=null) {
+			
+			switch(eventType) {
+			case START:
+			case STOP:
+			case RESTART:
+			case RELOAD:				
+				builder.appendPath("events");
+				processRequest(Method.POST, builder.build().toString(), type, null, params, listener, errorListener, tag);
+				break;
+			case DELETE:
+				processRequest(Method.DELETE, builder.build().toString(), type, null, params, listener, errorListener, tag);
+				break;
+			}
+			
+		}
+	}
+
 	
 
 	

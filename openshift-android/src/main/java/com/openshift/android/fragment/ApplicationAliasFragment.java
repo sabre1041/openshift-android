@@ -134,7 +134,6 @@ public class ApplicationAliasFragment extends ListFragment {
 	    public boolean onOptionsItemSelected(MenuItem item) 	    {
 	    	switch(item.getItemId()) {
 	    	case R.id.menu_create_alias:
-		    	Log.v(ApplicationAliasFragment.class.getPackage().getName(),"Woot Within Menu!");
 	    		ApplicationAliasResource alias = new ApplicationAliasResource();
 	    		alias.setApplicationResource(applicationResource);
 	    		

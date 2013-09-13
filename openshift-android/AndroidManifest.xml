@@ -14,6 +14,7 @@
             </intent-filter> 
         </activity>
         <activity android:label="Create Application" android:name=".activity.ApplicationNewActivity" android:screenOrientation="portrait"/>
+        <activity android:label="Add Cartridge" android:name=".activity.CartridgeActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.ApplicationsActivity"  android:screenOrientation="portrait"/>
         <activity android:name=".activity.AliasActivity"  android:screenOrientation="portrait"/>
       </application>

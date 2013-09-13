@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   
+    <item
+        android:id="@+id/menu_add_cartridge"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="@string/add_cartridge"/>
+        
+    
+                      
+</menu>

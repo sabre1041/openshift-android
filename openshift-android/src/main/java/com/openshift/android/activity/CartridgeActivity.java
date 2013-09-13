@@ -26,37 +26,40 @@ import com.openshift.android.R;
 import com.openshift.android.adapter.NewCartridgeAdapter;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
-import com.openshift.android.model.DomainResource;
 import com.openshift.android.model.OpenshiftDataList;
 import com.openshift.android.model.OpenshiftMessage;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestError;
 import com.openshift.android.rest.OpenshiftRestManager;
 
-public class ApplicationNewActivity extends Activity {
+public class CartridgeActivity extends Activity {
 
+	private EditText aliasName;
+	private Button addCartridgeButton;
+	
+	private ApplicationResource applicationResource;
+	private ProgressDialog progressDialog;
+	
 	private NewCartridgeAdapter cartridgeAdapter;
 	private List<CartridgeResource> cartridgeList = new ArrayList<CartridgeResource>();
 	private Spinner cartridgeTypeSpinner;
-	private EditText appName;
-	private Button createAppButton;
+
 	
-	private DomainResource domainResource;
-	private ProgressDialog progressDialog;
+	public static final String APPLICATION_RESOURCE = "com.openshift.android.APPLICATION_RESOURCE";
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.activity_application_new);
+	    setContentView(R.layout.activity_cartridge);
 
 	    Intent intent = getIntent();
-	    DomainResource domain = (DomainResource) intent.getSerializableExtra(DomainActivity.DOMAIN_RESOURCE_EXTRA);
-	    this.domainResource = domain;
-
+	    final ApplicationResource applicationResource = (ApplicationResource) intent.getSerializableExtra(CartridgeActivity.APPLICATION_RESOURCE);
+	    this.applicationResource = applicationResource;
 	    
-	    cartridgeTypeSpinner = (Spinner) findViewById(R.id.new_app_cartrige_spinner);
-	    appName = (EditText) findViewById(R.id.new_app_name);
-	    createAppButton = (Button) findViewById(R.id.new_app_button_create);
+	    addCartridgeButton = (Button) findViewById(R.id.cartridge_button_add); 
+	    
+	    cartridgeTypeSpinner = (Spinner) findViewById(R.id.new_cartrige_spinner);
 	    
 	    
 	    cartridgeAdapter = new NewCartridgeAdapter(this, R.layout.simple_textview_layout,cartridgeList);
@@ -76,10 +79,22 @@ public class ApplicationNewActivity extends Activity {
 					
 					CartridgeResource cartridgeResource = cartridgeResourceIterator.next();
 					
-					if(!"standalone".equals(cartridgeResource.getType().trim())) {
+					if(!"embedded".equals(cartridgeResource.getType().trim())) {
 						
 						cartridgeResourceIterator.remove();
+						continue;
 					}
+					
+					if(applicationResource.getCartridges() != null) {
+						for(CartridgeResource appCartridgeResource : applicationResource.getCartridges()) {
+							if(cartridgeResource.getName().equals(appCartridgeResource.getName())) {
+								cartridgeResourceIterator.remove();
+								continue;
+							}
+						}
+					}
+					
+					
 				}
 				
 				displayList(cartridgeResources);
@@ -92,12 +107,99 @@ public class ApplicationNewActivity extends Activity {
 				// TODO Auto-generated method stub
 				
 			}
-		}, OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
+		}, OpenshiftConstants.CARTRIDGEACTIVITY_TAG);
+	    
+	    
+	        
 	}
 	
 	
+	 	
+	public void onAddButtonClick(View v) {
+		
+		addCartridgeButton.setEnabled(false);
+		
+		CartridgeResource selectedCartridge = (CartridgeResource) cartridgeTypeSpinner.getSelectedItem();
+		
+		if(selectedCartridge != null) {
+		
+			progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
+			progressDialog.setTitle("Adding Cartridge");
+			progressDialog.setMessage("Adding "+selectedCartridge.getDisplayName());
+			progressDialog.setIndeterminate(true);
+			progressDialog.show();
+	
+			OpenshiftRestManager.getInstance().addCartridge(applicationResource, selectedCartridge.getName(), new Response.Listener<OpenshiftResponse<CartridgeResource>>() {
+
+				@Override
+				public void onResponse(
+						OpenshiftResponse<CartridgeResource> response) {
+					
+					progressDialog.dismiss();
+					
+					AlertDialog dialog = new AlertDialog.Builder(CartridgeActivity.this).setTitle("Cartridge Created").setMessage("Cartridge Added Successfully").setNeutralButton("OK", null).create();
+					dialog.setOnDismissListener(new OnDismissListener() {
+						
+						@Override
+						public void onDismiss(DialogInterface dialog) {
+							finish();
+							
+						}
+					});
+					dialog.show();
+
+					
+				}
+			}, new Response.ErrorListener() {
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					
+					addCartridgeButton.setEnabled(true);
+					progressDialog.dismiss();
+					
+					if(error instanceof OpenshiftRestError) {
+						OpenshiftRestError e = (OpenshiftRestError) error;
+						OpenshiftResponse<CartridgeResource> errObj = (OpenshiftResponse<CartridgeResource>) e.getObject();
+						
+						StringBuilder sb = new StringBuilder();
+						if(errObj.getMessages() != null) {
+							for(OpenshiftMessage message : errObj.getMessages()) {
+								sb.append(message.getText());
+							}
+						}
+						new AlertDialog.Builder(CartridgeActivity.this).setTitle("Cartridge Addition Failure").setMessage(sb.toString()).setNeutralButton("Close", null).create().show();
+					}
+					else {
+
+						new AlertDialog.Builder(CartridgeActivity.this).setTitle("Cartridge Addition Failure").setMessage("Failed to Add Cartridge").setNeutralButton("Close", null).create().show();
+					}
+					
+				}
+			}, OpenshiftConstants.CARTRIDGEACTIVITY_TAG);
+		}
+			
+		
+		
+	}
+	
+	public void onResetButtonClick(View v) {
+		
+		finish();
+		
+	}
+	
+    @Override
+    public void onStop() {
+    	
+    	super.onStop();
+    	
+		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.CARTRIDGEACTIVITY_TAG);
+
+    }
+    
 	/**
-	 * Binds the Application Response Data to the List
+	 * Binds the Cartridge Response Data to the List
 	 * 
 	 * @param response The response data to fill the adapter
 	 */
@@ -126,91 +228,8 @@ public class ApplicationNewActivity extends Activity {
 		cartridgeAdapter.setNotifyOnChange(true);					
 		cartridgeAdapter.notifyDataSetChanged();
 	}
+    
 	
-	public void onCreateButtonClick(View v) {
-		
-		createAppButton.setEnabled(false);
-		
-		CartridgeResource selectedCartridge = (CartridgeResource) cartridgeTypeSpinner.getSelectedItem();
-		
-		if(selectedCartridge != null) {
-		
-			progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
-			progressDialog.setTitle("Creating Application");
-			progressDialog.setMessage("Creating "+appName.getText().toString());
-			progressDialog.setIndeterminate(true);
-			progressDialog.show();
-	
-			OpenshiftRestManager.getInstance().createApplication(domainResource.getName(), appName.getText().toString(), selectedCartridge.getName(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
-
-				@Override
-				public void onResponse(
-						OpenshiftResponse<ApplicationResource> response) {
-					
-					progressDialog.dismiss();
-					
-					AlertDialog dialog = new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Created").setMessage("Application Created Successfully").setNeutralButton("OK", null).create();
-					dialog.setOnDismissListener(new OnDismissListener() {
-						
-						@Override
-						public void onDismiss(DialogInterface dialog) {
-							finish();
-							
-						}
-					});
-					dialog.show();
-
-					
-				}
-			}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					
-					createAppButton.setEnabled(true);
-					progressDialog.dismiss();
-					
-					if(error instanceof OpenshiftRestError) {
-						OpenshiftRestError e = (OpenshiftRestError) error;
-						OpenshiftResponse<ApplicationResource> errObj = (OpenshiftResponse<ApplicationResource>) e.getObject();
-						
-						StringBuilder sb = new StringBuilder();
-						if(errObj.getMessages() != null) {
-							for(OpenshiftMessage message : errObj.getMessages()) {
-								sb.append(message.getText());
-							}
-						}
-						new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage(sb.toString()).setNeutralButton("Close", null).create().show();
-					}
-					else {
-
-						new AlertDialog.Builder(ApplicationNewActivity.this).setTitle("Application Creation Failure").setMessage("Failed to Create Application").setNeutralButton("Close", null).create().show();
-					}
-					
-				}
-			}, OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
-			
-			
-			
-		}
-		
-	}
-	
-	public void onResetButtonClick(View v) {
-		
-		finish();
-		
-	}
-	
-    @Override
-    public void onStop() {
-    	
-    	super.onStop();
-    	
-		OpenshiftAndroidApplication.getInstance().getRequestQueue().cancelAll(OpenshiftConstants.APPLICATIONNEWACTIVITY_TAG);
-
-    }
-
 	
 	
 

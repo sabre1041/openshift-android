@@ -198,8 +198,6 @@ public class ApplicationListActivity extends ListActivity {
 						progressDialog.setTitle(appResource.getName());
 						progressDialog.setMessage("Deleting Application");
 						progressDialog.show();
-
-						//TODO: Delete Application
 						
 						executeApplicationEvent(appResource.getName(), EventType.DELETE, "Deleted");
 					}

@@ -2,6 +2,6 @@ package com.openshift.android.model;
 
 public enum EventType {
 	
-	START,STOP,RESTART,DELETE;
+	START,STOP,RESTART,RELOAD,DELETE;
 
 }

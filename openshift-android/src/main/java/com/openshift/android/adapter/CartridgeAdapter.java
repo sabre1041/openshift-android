@@ -73,10 +73,18 @@ public class CartridgeAdapter extends ArrayAdapter<CartridgeResource> {
 				status.setText("Up");
 				status.setTextColor(Color.parseColor("#339900"));
 			}
+			else if(cartridge.getStatusMessages().get(0).getMessage().toLowerCase().contains("enabled")) {
+				status.setText("Enabled");	
+				status.setTextColor(Color.parseColor("#339900"));
+			}			
 			else if(cartridge.getStatusMessages().get(0).getMessage().toLowerCase().contains("stopped")) {
 				status.setText("Down");	
 				status.setTextColor(Color.RED);
 			}
+			else if(cartridge.getStatusMessages().get(0).getMessage().toLowerCase().contains("disabled")) {
+				status.setText("Disabled");	
+				status.setTextColor(Color.RED);
+			}			
 			else {
 				status.setText("Unknown");
 				status.setTextColor(Color.DKGRAY);

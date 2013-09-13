@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.openshift.android.R;
-import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.util.ImageUtils;
@@ -25,13 +24,13 @@ import com.openshift.android.util.ImageUtils;
  * @see ApplicationResource
  * 
  */
-public class NewApplicationCartridgeAdapter extends
+public class NewCartridgeAdapter extends
 		ArrayAdapter<CartridgeResource> {
 
 	private List<CartridgeResource> objects;
 	private Context context;
 
-	public NewApplicationCartridgeAdapter(Context context,
+	public NewCartridgeAdapter(Context context,
 			int textViewResourceId, List<CartridgeResource> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
@@ -47,7 +46,7 @@ public class NewApplicationCartridgeAdapter extends
 			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			vi = inflater.inflate(
-					R.layout.new_application_cartridge_row_layout, parent,
+					R.layout.new_cartridge_row_layout, parent,
 					false);
 		}
 

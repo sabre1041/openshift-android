@@ -25,6 +25,13 @@
     <string name="delete">Delete</string>
     <string name="create_alias">Create Alias</string>
     <color name="white">#FFFFFF</color>
+    <string name="start_cartridge">Start Cartridge</string>
+    <string name="stop_cartridge">Stop Cartridge</string>
+    <string name="restart_cartridge">Restart Cartridge</string>
+    <string name="delete_cartridge">Delete Cartridge</string>
+    <string name="add_cartridge">Add Cartridge</string>
+    <string name="reload_cartridge">Reload Cartridge</string>
+    <string name="create_cartridge">Create Cartridge</string>
     
 
 </resources>
