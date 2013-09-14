@@ -5,14 +5,12 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +25,6 @@ import com.openshift.android.fragment.ApplicationAliasFragment;
 import com.openshift.android.fragment.ApplicationCartridgesFragment;
 import com.openshift.android.fragment.ApplicationInfoFragment;
 import com.openshift.android.fragment.OnApplicationUpdateListener;
-import com.openshift.android.fragment.RefreshableFragment;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.EventType;
 import com.openshift.android.model.OpenshiftResponse;
@@ -180,19 +177,7 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
 							@Override
 							public void onResponse(
 									OpenshiftResponse<ApplicationResource> response) {
-								applicationActionResponse(true, applicationName + " Successfully "+responseMessage, responseMessage);
-								
-								try {
-									
-									RefreshableFragment fg = (RefreshableFragment) getFragmentManager().findFragmentById(android.R.id.content);
-									fg.refresh();
-									 
-									
-								}
-								catch(ClassCastException e) {
-									
-								}
-								
+								applicationActionResponse(true, applicationName + " Successfully "+responseMessage, responseMessage);								
 								
 							}
 						}, new Response.ErrorListener() {

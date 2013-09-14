@@ -10,12 +10,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Response;
@@ -41,6 +44,7 @@ public class ApplicationListActivity extends ListActivity {
 	
 	
 	private DomainResource domainResource;
+	private LinearLayout progressLayout;
 	
 	private ApplicationAdapter applicationAdapter;
 	private List<ApplicationResource> applicationList = new ArrayList<ApplicationResource>();
@@ -61,9 +65,7 @@ public class ApplicationListActivity extends ListActivity {
 	    applicationAdapter = new ApplicationAdapter(this, R.layout.application_row_layout, applicationList);
 	    setListAdapter(applicationAdapter);
 	    
-	    registerForContextMenu(getListView());
-	    
-	    makeApplicationListRequest();
+	    progressLayout = (LinearLayout) findViewById(R.id.applicationLinearLayout);
 	}
 	
 	@Override
@@ -96,8 +98,11 @@ public class ApplicationListActivity extends ListActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add("Create Application");
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.create_application_menu, menu);
+
 		return true;
+
 	}
 	
 	/**
@@ -106,12 +111,12 @@ public class ApplicationListActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		if(item.getTitle().equals("Create Application")) {
-			Intent intent = new Intent(this, ApplicationNewActivity.class);
-			intent.putExtra(DomainActivity.DOMAIN_RESOURCE_EXTRA, domainResource);
-			startActivity(intent);
-			return true;
-		}
+		switch(item.getItemId()) {
+			case R.id.menu_create_application:
+				Intent intent = new Intent(this, ApplicationNewActivity.class);
+				intent.putExtra(DomainActivity.DOMAIN_RESOURCE_EXTRA, domainResource);
+				startActivity(intent);
+			}
 		
 		return super.onOptionsItemSelected(item);
 		
@@ -125,17 +130,17 @@ public class ApplicationListActivity extends ListActivity {
 	public void onCreateContextMenu(ContextMenu menu, View v,
 	    ContextMenuInfo menuInfo) {
 		
-		super.onCreateContextMenu(menu, v, menuInfo);
-		
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
 		
 		ApplicationResource appResource = applicationAdapter.getItem(info.position);
 		menu.setHeaderTitle(appResource.getName());
-		menu.add("View Application");
-		menu.add("Restart Application");
-		menu.add("Stop Application");
-		menu.add("Start Application");
-		menu.add("Delete Application");
+
+		
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.view_application_menu, menu);
+		inflater.inflate(R.menu.application_menu, menu);
+
+		super.onCreateContextMenu(menu, v, menuInfo);
 	}
 	
 	 /**
@@ -147,13 +152,14 @@ public class ApplicationListActivity extends ListActivity {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 			final ApplicationResource appResource = applicationAdapter.getItem(info.position);
 
-						
-			if(item.getTitle().equals("View Application")) {
+			
+			switch(item.getItemId()) {
+			case R.id.menu_view_application:
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(appResource.getApplicationUrl()));
 				startActivity(i);
-			}
-			else if(item.getTitle().equals("Stop Application")) {
+				break;
+			case R.id.menu_application_stop:
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 				progressDialog.setTitle(appResource.getName());
 				progressDialog.setMessage("Stopping Application");
@@ -161,29 +167,28 @@ public class ApplicationListActivity extends ListActivity {
 
 				executeApplicationEvent(appResource.getName(), EventType.STOP, "Stopped");				
 				
-			}
-			else if(item.getTitle().equals("Start Application")) {
+				break;
+			case R.id.menu_application_start:
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 				progressDialog.setTitle(appResource.getName());
 				progressDialog.setMessage("Starting Application");
 				progressDialog.show();
 
 				executeApplicationEvent(appResource.getName(), EventType.START, "Started");
-				
-				
-			}
-			else if(item.getTitle().equals("Restart Application")) {
+
+				break;
+			case R.id.menu_application_restart:
 				progressDialog = new ProgressDialog(this, ProgressDialog.STYLE_SPINNER);
 				progressDialog.setTitle(appResource.getName());
 				progressDialog.setMessage("Restarting Application");
 				progressDialog.show();
 				
 				executeApplicationEvent(appResource.getName(), EventType.RESTART, "Restarted");
+
+				break;
 				
-			}
-			else if(item.getTitle().equals("Delete Application")) {
-				
-			
+			case R.id.menu_application_delete:
+
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle("Delete Application?");
 				builder.setMessage("Are you sure you want to delete "+appResource.getName()+"?");
@@ -212,7 +217,9 @@ public class ApplicationListActivity extends ListActivity {
 				});
 				
 				builder.create().show();
-			}
+				break;
+				
+			}		
 			
 			
 		 return super.onContextItemSelected(item);
@@ -284,13 +291,21 @@ public class ApplicationListActivity extends ListActivity {
 	}
 	
 	private void makeApplicationListRequest() {
+		
+		if(applicationList.size() == 0) {
+		
+			progressLayout.setVisibility(View.VISIBLE);
+			
+		}
+		
 		OpenshiftRestManager.getInstance().listApplications(domainResource.getName(),
 	    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationResource>>>() {
 
 					@Override
 					public void onResponse(
 							OpenshiftResponse<OpenshiftDataList<ApplicationResource>> response) {
-						displayList(response);	
+						displayList(response);
+						progressLayout.setVisibility(View.GONE);
 
 						
 					}
@@ -299,6 +314,7 @@ public class ApplicationListActivity extends ListActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						ActivityUtils.showToast(getApplicationContext(), "Unable to get Application List");
+						progressLayout.setVisibility(View.GONE);
 					}
 				}, OpenshiftConstants.APPLICATIONLISTACTIVITY_TAG);
 

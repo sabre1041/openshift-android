@@ -10,8 +10,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.android.volley.Response;
@@ -41,7 +43,7 @@ public class DomainActivity extends ListActivity {
 
 	private DomainAdapter domainAdapter;
 	private List<DomainResource> domainList = new ArrayList<DomainResource>();
-	
+	private LinearLayout progressLayout;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -52,12 +54,17 @@ public class DomainActivity extends ListActivity {
 	    domainAdapter = new DomainAdapter(this, R.layout.domain_row_layout, domainList);
 	    setListAdapter(domainAdapter);
 	    
+	    progressLayout = (LinearLayout) findViewById(R.id.domainLinearLayout);
+	    
+	    progressLayout.setVisibility(View.VISIBLE);
+	    
 	    OpenshiftRestManager.getInstance().listDomains(new Response.Listener<OpenshiftResponse<OpenshiftDataList<DomainResource>>>() {
 
 					@Override
 					public void onResponse(
 							OpenshiftResponse<OpenshiftDataList<DomainResource>> response) {
 						displayList(response);
+						progressLayout.setVisibility(View.GONE);
 						
 					}
 				}, new Response.ErrorListener() {
@@ -65,6 +72,7 @@ public class DomainActivity extends ListActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						ActivityUtils.showToast(getApplicationContext(), "Failed to Display Domains");
+						progressLayout.setVisibility(View.GONE);
 					}
 				}, OpenshiftConstants.DOMAINACTIVITY_TAG);
 	    
@@ -76,7 +84,9 @@ public class DomainActivity extends ListActivity {
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		menu.add("Logout");
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.domain_menu, menu);
+
 		return true;
 	}
 	
@@ -86,15 +96,18 @@ public class DomainActivity extends ListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		if(item.getTitle().equals("Logout")) {
-			AuthorizationManager.getInstance(getApplicationContext()).invalidateAuthentication();
-			
-			Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			startActivity(intent);
-			finish();
-			return true;
-		}
+		switch(item.getItemId()) {
+			case R.id.menu_logout:
+				AuthorizationManager.getInstance(getApplicationContext()).invalidateAuthentication();
+				OpenshiftAndroidApplication.getInstance().getRequestQueue().getCache().clear();
+				
+				Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				finish();
+				
+			}
+
 		
 		return super.onOptionsItemSelected(item);
 		

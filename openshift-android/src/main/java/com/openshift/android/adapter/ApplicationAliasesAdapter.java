@@ -83,7 +83,7 @@ public class ApplicationAliasesAdapter extends ArrayAdapter<ApplicationAliasReso
 			public void onClick(View v) {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				builder.setTitle("Delete Application?");
+				builder.setTitle("Delete Alias?");
 				builder.setMessage("Are you sure you want to delete "+applicationAlias.getId()+"?");
 				
 				

@@ -11,7 +11,7 @@ public class ImageUtils {
 	
 	public static int getImageResourceId(Context context, String name) {
 		
-		String resourceName = name.substring(0, name.lastIndexOf(VERSION_SPLIT)).concat(LOGO);
+		String resourceName = name.substring(0, name.indexOf(VERSION_SPLIT)).concat(LOGO);
 		
 		int resource =context.getResources().getIdentifier(resourceName,
                 "drawable", context.getPackageName());

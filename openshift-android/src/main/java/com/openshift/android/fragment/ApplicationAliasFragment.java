@@ -6,13 +6,13 @@ import java.util.List;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,6 +35,7 @@ public class ApplicationAliasFragment extends ListFragment {
 	private ApplicationAliasesAdapter aliasesAdapter;
 	private List<ApplicationAliasResource> applicationAliases = new ArrayList<ApplicationAliasResource>();
 	
+	private LinearLayout progressLayout;
 	
     @Override
    public void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,9 @@ public class ApplicationAliasFragment extends ListFragment {
 		Bundle args = getArguments();
 		
 		this.applicationResource = (ApplicationResource) args.getSerializable(ApplicationsActivity.APPLICATION_RESOURCE_EXTRA);
+		
+	    progressLayout = (LinearLayout) view.findViewById(R.id.aliasLinearLayout);
 
-		loadData();
 	    
 	    return view;
 	  }
@@ -84,20 +86,29 @@ public class ApplicationAliasFragment extends ListFragment {
 
 	  
 		public void loadData() {
+			
+			if(applicationAliases.size() == 0) {
+				progressLayout.setVisibility(View.VISIBLE);
+			}
+
 			OpenshiftRestManager.getInstance().getApplicationAliases(applicationResource.getDomainId(), applicationResource.getName(),
 		    		new Response.Listener<OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>>>() {
 
 						@Override
 						public void onResponse(
 								OpenshiftResponse<OpenshiftDataList<ApplicationAliasResource>> response) {
-
+							
 							updateList(response.getData().getList());
+							
+						    progressLayout.setVisibility(View.GONE);
+
 							
 						}
 					}, new Response.ErrorListener() {
 
 						@Override
 						public void onErrorResponse(VolleyError error) {
+							progressLayout.setVisibility(View.GONE);
 							ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to get Application Aliases");
 						}
 					}, OpenshiftConstants.APPLICATIONALIASFRAGMENT_TAG);

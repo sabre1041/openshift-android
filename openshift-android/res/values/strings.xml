@@ -7,7 +7,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="openshift_title">Hello OpenShift</string>
     <string name="view_openshift_account">View OpenShift Account Information</string>
-    <string name="openshift_origin_base_url">https://openshift.redhat.com/broker/rest</string>
+    <string name="openshift_public_base_url">https://openshift.redhat.com/broker/rest</string>
     <string name="openshift_domain_title">Openshift Domains</string>
     <string name="account_title">Openshift Account</string>
     <string name="password_title">Password</string>
@@ -23,6 +23,11 @@
     <string name="create_application">Create Application</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="create">Create</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="view_application">View Application</string>
+    <string name="add">Add</string>        
     <string name="create_alias">Create Alias</string>
     <color name="white">#FFFFFF</color>
     <string name="start_cartridge">Start Cartridge</string>
@@ -32,6 +37,10 @@
     <string name="add_cartridge">Add Cartridge</string>
     <string name="reload_cartridge">Reload Cartridge</string>
     <string name="create_cartridge">Create Cartridge</string>
+    <string name="empty_aliases">No Aliases Exist</string>
+    <string name="empty_domains">No Aliases Exist</string>
+    <string name="empty_applications">No Applications Exist</string>
+    <string name="empty_cartridges">No Cartridges Exist</string>
     
 
 </resources>

@@ -19,17 +19,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.openshift.android.OpenshiftAndroidApplication;
 import com.openshift.android.OpenshiftConstants;
 import com.openshift.android.R;
-import com.openshift.android.activity.AliasActivity;
 import com.openshift.android.activity.ApplicationsActivity;
 import com.openshift.android.activity.CartridgeActivity;
 import com.openshift.android.adapter.CartridgeAdapter;
-import com.openshift.android.model.ApplicationAliasResource;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.CartridgeResource;
 import com.openshift.android.model.EventType;
@@ -37,12 +36,13 @@ import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.util.ActivityUtils;
 
-public class ApplicationCartridgesFragment extends ListFragment implements RefreshableFragment {
+public class ApplicationCartridgesFragment extends ListFragment  {
 	
 	private CartridgeAdapter cartridgeAdapter;
 	private List<CartridgeResource> cartridgeList = new ArrayList<CartridgeResource>();
 	private ApplicationResource applicationResource;
 	private ProgressDialog progressDialog;
+	private LinearLayout progressLayout;
 
 	
     @Override
@@ -60,10 +60,9 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 		Bundle args = getArguments();
 		
 		this.applicationResource = (ApplicationResource) args.getSerializable(ApplicationsActivity.APPLICATION_RESOURCE_EXTRA);
+		    
+	    progressLayout = (LinearLayout) view.findViewById(R.id.cartridgeLinearLayout);	    
 		
-	    loadData();
-	    
-	    
 	    return view;
 	} 
 
@@ -115,11 +114,6 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 		}
 	}
 
-	@Override
-	public void refresh() {
-		loadData();
-		
-	}
 	
 	@Override
 	public void onDestroy() {
@@ -130,11 +124,18 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 	}
 	
 	public void loadData() {
+		if(cartridgeList.size() == 0) {
+			progressLayout.setVisibility(View.VISIBLE);
+		}
+		
 		OpenshiftRestManager.getInstance().getApplicationWithCartridge(applicationResource.getDomainId(), applicationResource.getName(), new Response.Listener<OpenshiftResponse<ApplicationResource>>() {
 
 			@Override
 			public void onResponse(
 					OpenshiftResponse<ApplicationResource> response) {
+				
+				progressLayout.setVisibility(View.GONE);
+				
 				updateList(response.getData().getCartridges());
 										
 				for(CartridgeResource cartridge : response.getData().getCartridges()) {
@@ -151,7 +152,7 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 
 								@Override
 								public void onErrorResponse(VolleyError error) {
-									ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to Retrieve Cartridge");
+									Log.v(OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG, "Unable to Retrieve Cartridge: "+error.getMessage());
 								}
 							}, OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG);	
 				}
@@ -162,6 +163,9 @@ public class ApplicationCartridgesFragment extends ListFragment implements Refre
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
+				
+				progressLayout.setVisibility(View.GONE);
+				
 				ActivityUtils.showToast(getActivity().getApplicationContext(), "Unable to Retrieve Cartridge");
 			}
 		}, OpenshiftConstants.APPLICATIONCARTRIDGESFRAGMENT_TAG);
