@@ -59,6 +59,7 @@
                     android:id="@+id/new_app_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
                     android:inputType="text" />
             </LinearLayout>
 

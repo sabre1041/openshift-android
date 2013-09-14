@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.AdapterView;
 
 import com.android.volley.Response;
@@ -49,6 +50,8 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
 	    ApplicationResource application = (ApplicationResource) intent.getSerializableExtra(ApplicationsActivity.APPLICATION_RESOURCE_EXTRA);
 	    this.applicationResource = application;
 
+	    requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+	    
 	    setContentView(R.layout.activity_applications_base);
 	    
 	    ActionBar actionbar = getActionBar();

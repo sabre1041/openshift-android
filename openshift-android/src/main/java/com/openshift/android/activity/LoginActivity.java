@@ -97,6 +97,7 @@ public class LoginActivity extends Activity {
 					@Override
 					public void onResponse(
 							OpenshiftResponse<UserResource> response) {
+						authenticationManager.setAuthenticated(true);
 						progressDialog.dismiss();
 						Intent homeIntent = new Intent(getApplicationContext(), DomainActivity.class);
 						startActivity(homeIntent);

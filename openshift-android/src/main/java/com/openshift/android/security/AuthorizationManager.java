@@ -24,7 +24,7 @@ public class AuthorizationManager {
 	private static final String PREF_NAME_OPENSHIFT_ACCOUNT = "openshiftAccount";
 	private static final String PREF_NAME_OPENSHIFT_PASSWORD = "openshiftPassword";
 	private static final String PREF_NAME_OPENSHIFT_URL = "openshiftUrl";
-
+	private static final String PREF_NAME_OPENSHIFT_AUTHENTICATED = "openshiftAuthenticated";
 	
 	
 	private AuthorizationManager(Context ctx) {		
@@ -60,6 +60,17 @@ public class AuthorizationManager {
 	} 	
 	
 	/**
+	 * Sets the value if Authentication to OpenShift has been confirmed
+	 * 
+	 * @param openshiftAuthenticated
+	 */
+	public void setAuthenticated(Boolean openshiftAuthenticated) {
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putBoolean(PREF_NAME_OPENSHIFT_AUTHENTICATED, openshiftAuthenticated);
+		editor.commit();
+	}
+	
+	/**
 	 * Check to see if a user is currently autenticated
 	 * 
 	 * @return boolean indicating whether a user is currently authenticated
@@ -68,8 +79,9 @@ public class AuthorizationManager {
 		String openshiftAccount = sharedPreferences.getString(PREF_NAME_OPENSHIFT_ACCOUNT, null);
 		String openshiftPassword = sharedPreferences.getString(PREF_NAME_OPENSHIFT_PASSWORD, null);
 		String openshiftUrl = sharedPreferences.getString(PREF_NAME_OPENSHIFT_URL, null);
+		Boolean openshiftAuthenticated = sharedPreferences.getBoolean(PREF_NAME_OPENSHIFT_AUTHENTICATED, false);
 		
-		if(openshiftAccount == null || openshiftPassword == null || openshiftUrl == null) return false;
+		if(openshiftAccount == null || openshiftPassword == null || openshiftUrl == null || openshiftAuthenticated == false) return false;
 		
 		return true;
 		

@@ -120,7 +120,7 @@ public class ApplicationAliasFragment extends ListFragment {
 		 * 
 		 * @param response The response data to fill the adapter
 		 */
-		private void updateList(List<ApplicationAliasResource> applicationAliasesResources) {
+		private synchronized void updateList(List<ApplicationAliasResource> applicationAliasesResources) {
 			aliasesAdapter.clear();
 			
 			
