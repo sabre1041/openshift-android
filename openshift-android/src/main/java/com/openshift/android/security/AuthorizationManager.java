@@ -2,7 +2,6 @@ package com.openshift.android.security;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 /**
  * Contains the logic for storing and retrieving the credentials for a user 
@@ -17,7 +16,7 @@ import android.preference.PreferenceManager;
  */
 public class AuthorizationManager {
 	
-	private final SharedPreferences sharedPreferences;
+	private final SecurePreferences sharedPreferences;
 	
 	private static AuthorizationManager instance;
 	
@@ -28,7 +27,7 @@ public class AuthorizationManager {
 	
 	
 	private AuthorizationManager(Context ctx) {		
-		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx.getApplicationContext());
+		sharedPreferences = new SecurePreferences(ctx);
 		
 	}
 	
