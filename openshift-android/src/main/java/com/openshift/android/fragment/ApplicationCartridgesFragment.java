@@ -311,7 +311,7 @@ public class ApplicationCartridgesFragment extends ListFragment  {
 							cartridgeActionResponse(true, cartridgeName + " Successfully "+responseMessage, responseMessage);
 							
 							// Get a fresh set of data
-							loadData();
+							//loadData();
 							
 						}
 					}, new Response.ErrorListener() {
@@ -336,7 +336,11 @@ public class ApplicationCartridgesFragment extends ListFragment  {
 					if(progressDialog != null && progressDialog.isShowing()) {
 						progressDialog.dismiss();
 					}
-					new AlertDialog.Builder(getActivity()).setTitle("Cartridge " +action).setMessage(successMessage).setNeutralButton("Close", null).show();
+					new AlertDialog.Builder(getActivity()).setTitle("Cartridge " +action).setMessage(successMessage).setNeutralButton("Close", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							loadData();
+						}
+					}).show();
 					
 				}
 				else {
