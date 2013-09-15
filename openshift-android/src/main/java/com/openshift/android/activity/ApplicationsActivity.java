@@ -26,11 +26,20 @@ import com.openshift.android.fragment.ApplicationAliasFragment;
 import com.openshift.android.fragment.ApplicationCartridgesFragment;
 import com.openshift.android.fragment.ApplicationInfoFragment;
 import com.openshift.android.fragment.OnApplicationUpdateListener;
+import com.openshift.android.fragment.RefreshableFragment;
 import com.openshift.android.model.ApplicationResource;
 import com.openshift.android.model.EventType;
 import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestManager;
 
+
+/**
+ * Activity for Openshift Application Management
+ *
+ * @author Andrew Block
+ * @author Joey Yore
+ * @version 1.0
+ */
 public class ApplicationsActivity extends Activity implements OnApplicationUpdateListener {
 	
 	private ApplicationResource applicationResource;
@@ -204,7 +213,12 @@ public class ApplicationsActivity extends Activity implements OnApplicationUpdat
 						if(progressDialog != null && progressDialog.isShowing()) {
 							progressDialog.dismiss();
 						}
-						AlertDialog dialog = new AlertDialog.Builder(ApplicationsActivity.this).setTitle("Application " +action).setMessage(successMessage).setNeutralButton("Close", null).create();
+						AlertDialog dialog = new AlertDialog.Builder(ApplicationsActivity.this).setTitle("Application " +action).setMessage(successMessage).setNeutralButton("Close", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								RefreshableFragment fg = (RefreshableFragment) getFragmentManager().findFragmentById(android.R.id.content);
+								fg.refresh();
+							}
+						}).create();
 						
 						if("Deleted".equals(action)) {
 							dialog.setOnDismissListener(new OnDismissListener() {

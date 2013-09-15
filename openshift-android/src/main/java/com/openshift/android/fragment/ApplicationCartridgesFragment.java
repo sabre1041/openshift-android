@@ -36,7 +36,16 @@ import com.openshift.android.model.OpenshiftResponse;
 import com.openshift.android.rest.OpenshiftRestManager;
 import com.openshift.android.util.ActivityUtils;
 
-public class ApplicationCartridgesFragment extends ListFragment  {
+
+
+/**
+ * Fragment for Openshift Cartridges
+ *
+ * @author Andrew Block
+ * @author Joey Yore
+ * @version 1.0
+ */
+public class ApplicationCartridgesFragment extends ListFragment implements RefreshableFragment  {
 	
 	private CartridgeAdapter cartridgeAdapter;
 	private List<CartridgeResource> cartridgeList = new ArrayList<CartridgeResource>();
@@ -310,9 +319,6 @@ public class ApplicationCartridgesFragment extends ListFragment  {
 								OpenshiftResponse<ApplicationResource> response) {
 							cartridgeActionResponse(true, cartridgeName + " Successfully "+responseMessage, responseMessage);
 							
-							// Get a fresh set of data
-							//loadData();
-							
 						}
 					}, new Response.ErrorListener() {
 
@@ -353,6 +359,9 @@ public class ApplicationCartridgesFragment extends ListFragment  {
 		 }
 	
 	
-	
+	@Override
+	public void refresh() {
+		loadData();
+	}
 
 }
