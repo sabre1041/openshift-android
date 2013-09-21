@@ -32,6 +32,11 @@
 			<version>2.2.4</version>
 		</dependency>
 		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android-support-v4</artifactId>
+			<version>r18</version>
+		</dependency>		
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.2</version>
@@ -122,6 +127,24 @@
 							<createChecksum>true</createChecksum>
 						</configuration>
 					</execution>
+					<execution>
+						<id>support-v4.jar</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<inherited>false</inherited>
+						<configuration>
+							<file>lib/android-support-v4.jar</file>
+							<groupId>com.google.android</groupId>
+							<artifactId>android-support-v4</artifactId>
+							<packaging>jar</packaging>
+							<version>r18</version>
+							<generatePom>true</generatePom>
+							<createChecksum>true</createChecksum>
+						</configuration>
+					</execution>
+					
 				</executions>
 			</plugin>
 		</plugins>
