@@ -33,7 +33,43 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword" />
-
+    
+    <RadioGroup
+        android:id="@+id/radioOpenshiftType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+ 
+        <RadioButton
+            android:id="@+id/radioOpenshiftOnline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/openshift_online" 
+            android:checked="true"
+            android:onClick="radioOpenshiftTypeOnClick" />
+ 
+        <RadioButton
+            android:id="@+id/radioOpenshiftEnterprise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/openshift_enterprise"
+            android:onClick="radioOpenshiftTypeOnClick" />
+ 			
+    </RadioGroup>
+    <TextView
+        android:id="@+id/openShiftEnterpriseTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/url"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />    
+     <EditText
+        android:id="@+id/openShiftEnterpriseUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textUri"
+        android:ems="10"
+        android:visibility="gone"
+         />
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"

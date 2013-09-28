@@ -41,6 +41,9 @@
     <string name="empty_domains">No Aliases Exist</string>
     <string name="empty_applications">No Applications Exist</string>
     <string name="empty_cartridges">No Cartridges Exist</string>
+    <string name="openshift_online">OpenShift Online</string>
+    <string name="openshift_enterprise">OpenShift Enterprise</string>
+    <string name="url">URL</string>
     
 
 </resources>
