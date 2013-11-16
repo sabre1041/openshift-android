@@ -1,6 +1,18 @@
 openshift-android
 =====================
 
+## NOTICE
+
+We are moving the app architecture to accomodate multiple mobile platforms instead of just Android.
+
+Because of this, the development on this git repo has been discontinued.
+
+The project has been moved: https://github.com/sabre1041/openshift-mobile.
+
+
+
+## Description
+
 Android application to manage an OpenShift account
 
 ## Getting Started
